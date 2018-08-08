@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huazhu.application.cms.wechat.comment.dao.ResConCommentMapper" >
+  <resultMap id="BaseResultMap" type="com.huazhu.application.cms.wechat.comment.entity.ResConComment" >
+    <id column="row_id" property="rowId" jdbcType="BIGINT" />
+    <result column="con_id" property="conId" jdbcType="BIGINT" />
+    <result column="user_comment_id" property="userCommentId" jdbcType="BIGINT" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="comment_type" property="commentType" jdbcType="INTEGER" />
+    <result column="content_time" property="contentTime" jdbcType="VARCHAR" />
+    <result column="reply_content" property="replyContent" jdbcType="VARCHAR" />
+    <result column="reply_time" property="replyTime" jdbcType="VARCHAR" />
+    <result column="org_id" property="orgId" jdbcType="BIGINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="BIGINT" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="BIGINT" />
+    <result column="active_flag" property="activeFlag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    row_id, con_id, user_comment_id, openid, content, comment_type, content_time, reply_content, 
+    reply_time, org_id, create_date, create_user, last_update_date, last_update_user, 
+    active_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huazhu.application.cms.wechat.comment.entity.ResConCommentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from res_con_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from res_con_comment
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from res_con_comment
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.huazhu.application.cms.wechat.comment.entity.ResConCommentExample" >
+    delete from res_con_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.huazhu.application.cms.wechat.comment.entity.ResConComment" >
+    insert into res_con_comment (row_id, con_id, user_comment_id, 
+      openid, content, comment_type, 
+      content_time, reply_content, reply_time, 
+      org_id, create_date, create_user, 
+      last_update_date, last_update_user, active_flag
+      )
+    values (#{rowId,jdbcType=BIGINT}, #{conId,jdbcType=BIGINT}, #{userCommentId,jdbcType=BIGINT}, 
+      #{openid,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{commentType,jdbcType=INTEGER}, 
+      #{contentTime,jdbcType=VARCHAR}, #{replyContent,jdbcType=VARCHAR}, #{replyTime,jdbcType=VARCHAR}, 
+      #{orgId,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=BIGINT}, 
+      #{lastUpdateDate,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=BIGINT}, #{activeFlag,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huazhu.application.cms.wechat.comment.entity.ResConComment" >
+    insert into res_con_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rowId != null" >
+        row_id,
+      </if>
+      <if test="conId != null" >
+        con_id,
+      </if>
+      <if test="userCommentId != null" >
+        user_comment_id,
+      </if>
+      <if test="openid != null" >
+        openid,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="commentType != null" >
+        comment_type,
+      </if>
+      <if test="contentTime != null" >
+        content_time,
+      </if>
+      <if test="replyContent != null" >
+        reply_content,
+      </if>
+      <if test="replyTime != null" >
+        reply_time,
+      </if>
+      <if test="orgId != null" >
+        org_id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="activeFlag != null" >
+        active_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rowId != null" >
+        #{rowId,jdbcType=BIGINT},
+      </if>
+      <if test="conId != null" >
+        #{conId,jdbcType=BIGINT},
+      </if>
+      <if test="userCommentId != null" >
+        #{userCommentId,jdbcType=BIGINT},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="commentType != null" >
+        #{commentType,jdbcType=INTEGER},
+      </if>
+      <if test="contentTime != null" >
+        #{contentTime,jdbcType=VARCHAR},
+      </if>
+      <if test="replyContent != null" >
+        #{replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replyTime != null" >
+        #{replyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=BIGINT},
+      </if>
+      <if test="activeFlag != null" >
+        #{activeFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.huazhu.application.cms.wechat.comment.entity.ResConCommentExample" resultType="java.lang.Integer" >
+    select count(*) from res_con_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update res_con_comment
+    <set >
+      <if test="record.rowId != null" >
+        row_id = #{record.rowId,jdbcType=BIGINT},
+      </if>
+      <if test="record.conId != null" >
+        con_id = #{record.conId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userCommentId != null" >
+        user_comment_id = #{record.userCommentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.openid != null" >
+        openid = #{record.openid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentType != null" >
+        comment_type = #{record.commentType,jdbcType=INTEGER},
+      </if>
+      <if test="record.contentTime != null" >
+        content_time = #{record.contentTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.replyContent != null" >
+        reply_content = #{record.replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.replyTime != null" >
+        reply_time = #{record.replyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgId != null" >
+        org_id = #{record.orgId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null" >
+        create_user = #{record.createUser,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastUpdateDate != null" >
+        last_update_date = #{record.lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastUpdateUser != null" >
+        last_update_user = #{record.lastUpdateUser,jdbcType=BIGINT},
+      </if>
+      <if test="record.activeFlag != null" >
+        active_flag = #{record.activeFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update res_con_comment
+    set row_id = #{record.rowId,jdbcType=BIGINT},
+      con_id = #{record.conId,jdbcType=BIGINT},
+      user_comment_id = #{record.userCommentId,jdbcType=BIGINT},
+      openid = #{record.openid,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      comment_type = #{record.commentType,jdbcType=INTEGER},
+      content_time = #{record.contentTime,jdbcType=VARCHAR},
+      reply_content = #{record.replyContent,jdbcType=VARCHAR},
+      reply_time = #{record.replyTime,jdbcType=VARCHAR},
+      org_id = #{record.orgId,jdbcType=BIGINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=BIGINT},
+      last_update_date = #{record.lastUpdateDate,jdbcType=TIMESTAMP},
+      last_update_user = #{record.lastUpdateUser,jdbcType=BIGINT},
+      active_flag = #{record.activeFlag,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huazhu.application.cms.wechat.comment.entity.ResConComment" >
+    update res_con_comment
+    <set >
+      <if test="conId != null" >
+        con_id = #{conId,jdbcType=BIGINT},
+      </if>
+      <if test="userCommentId != null" >
+        user_comment_id = #{userCommentId,jdbcType=BIGINT},
+      </if>
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="commentType != null" >
+        comment_type = #{commentType,jdbcType=INTEGER},
+      </if>
+      <if test="contentTime != null" >
+        content_time = #{contentTime,jdbcType=VARCHAR},
+      </if>
+      <if test="replyContent != null" >
+        reply_content = #{replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replyTime != null" >
+        reply_time = #{replyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        org_id = #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=BIGINT},
+      </if>
+      <if test="activeFlag != null" >
+        active_flag = #{activeFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huazhu.application.cms.wechat.comment.entity.ResConComment" >
+    update res_con_comment
+    set con_id = #{conId,jdbcType=BIGINT},
+      user_comment_id = #{userCommentId,jdbcType=BIGINT},
+      openid = #{openid,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      comment_type = #{commentType,jdbcType=INTEGER},
+      content_time = #{contentTime,jdbcType=VARCHAR},
+      reply_content = #{replyContent,jdbcType=VARCHAR},
+      reply_time = #{replyTime,jdbcType=VARCHAR},
+      org_id = #{orgId,jdbcType=BIGINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=BIGINT},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=BIGINT},
+      active_flag = #{activeFlag,jdbcType=TINYINT}
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huazhu.application.cms.wechat.comment.dao.ConInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.huazhu.application.cms.wechat.comment.entity.ConInfo" >
+    <id column="row_id" property="rowId" jdbcType="BIGINT" />
+    <result column="con_title" property="conTitle" jdbcType="VARCHAR" />
+    <result column="con_desc" property="conDesc" jdbcType="VARCHAR" />
+    <result column="con_type" property="conType" jdbcType="TINYINT" />
+    <result column="con_tag" property="conTag" jdbcType="BIGINT" />
+    <result column="con_share" property="conShare" jdbcType="TINYINT" />
+    <result column="con_message" property="conMessage" jdbcType="TINYINT" />
+    <result column="con_org" property="conOrg" jdbcType="BIGINT" />
+    <result column="org_type" property="orgType" jdbcType="TINYINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="BIGINT" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="BIGINT" />
+    <result column="active_flag" property="activeFlag" jdbcType="TINYINT" />
+    <result column="con_url" property="conUrl" jdbcType="VARCHAR" />
+    <result column="mate_id" property="mateId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="release_time" property="releaseTime" jdbcType="TIMESTAMP" />
+    <result column="expire_time" property="expireTime" jdbcType="TIMESTAMP" />
+    <result column="message_type" property="messageType" jdbcType="TINYINT" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.huazhu.application.cms.wechat.comment.entity.ConInfo" extends="BaseResultMap" >
+    <result column="con_detail" property="conDetail" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    row_id, con_title, con_desc, con_type, con_tag, con_share, con_message, con_org, 
+    org_type, create_date, create_user, last_update_date, last_update_user, active_flag, 
+    con_url, mate_id, status, release_time, expire_time, message_type, keyword
+  </sql>
+  <sql id="Blob_Column_List" >
+    con_detail
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.huazhu.application.cms.wechat.comment.entity.ConInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from con_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huazhu.application.cms.wechat.comment.entity.ConInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from con_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from con_info
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from con_info
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.huazhu.application.cms.wechat.comment.entity.ConInfoExample" >
+    delete from con_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.huazhu.application.cms.wechat.comment.entity.ConInfo" >
+    insert into con_info (row_id, con_title, con_desc, 
+      con_type, con_tag, con_share, 
+      con_message, con_org, org_type, 
+      create_date, create_user, last_update_date, 
+      last_update_user, active_flag, con_url, 
+      mate_id, status, release_time, 
+      expire_time, message_type, keyword, 
+      con_detail)
+    values (#{rowId,jdbcType=BIGINT}, #{conTitle,jdbcType=VARCHAR}, #{conDesc,jdbcType=VARCHAR}, 
+      #{conType,jdbcType=TINYINT}, #{conTag,jdbcType=BIGINT}, #{conShare,jdbcType=TINYINT}, 
+      #{conMessage,jdbcType=TINYINT}, #{conOrg,jdbcType=BIGINT}, #{orgType,jdbcType=TINYINT}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=BIGINT}, #{lastUpdateDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdateUser,jdbcType=BIGINT}, #{activeFlag,jdbcType=TINYINT}, #{conUrl,jdbcType=VARCHAR}, 
+      #{mateId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{releaseTime,jdbcType=TIMESTAMP}, 
+      #{expireTime,jdbcType=TIMESTAMP}, #{messageType,jdbcType=TINYINT}, #{keyword,jdbcType=VARCHAR}, 
+      #{conDetail,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huazhu.application.cms.wechat.comment.entity.ConInfo" >
+    insert into con_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rowId != null" >
+        row_id,
+      </if>
+      <if test="conTitle != null" >
+        con_title,
+      </if>
+      <if test="conDesc != null" >
+        con_desc,
+      </if>
+      <if test="conType != null" >
+        con_type,
+      </if>
+      <if test="conTag != null" >
+        con_tag,
+      </if>
+      <if test="conShare != null" >
+        con_share,
+      </if>
+      <if test="conMessage != null" >
+        con_message,
+      </if>
+      <if test="conOrg != null" >
+        con_org,
+      </if>
+      <if test="orgType != null" >
+        org_type,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="activeFlag != null" >
+        active_flag,
+      </if>
+      <if test="conUrl != null" >
+        con_url,
+      </if>
+      <if test="mateId != null" >
+        mate_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="releaseTime != null" >
+        release_time,
+      </if>
+      <if test="expireTime != null" >
+        expire_time,
+      </if>
+      <if test="messageType != null" >
+        message_type,
+      </if>
+      <if test="keyword != null" >
+        keyword,
+      </if>
+      <if test="conDetail != null" >
+        con_detail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rowId != null" >
+        #{rowId,jdbcType=BIGINT},
+      </if>
+      <if test="conTitle != null" >
+        #{conTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="conDesc != null" >
+        #{conDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="conType != null" >
+        #{conType,jdbcType=TINYINT},
+      </if>
+      <if test="conTag != null" >
+        #{conTag,jdbcType=BIGINT},
+      </if>
+      <if test="conShare != null" >
+        #{conShare,jdbcType=TINYINT},
+      </if>
+      <if test="conMessage != null" >
+        #{conMessage,jdbcType=TINYINT},
+      </if>
+      <if test="conOrg != null" >
+        #{conOrg,jdbcType=BIGINT},
+      </if>
+      <if test="orgType != null" >
+        #{orgType,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=BIGINT},
+      </if>
+      <if test="activeFlag != null" >
+        #{activeFlag,jdbcType=TINYINT},
+      </if>
+      <if test="conUrl != null" >
+        #{conUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mateId != null" >
+        #{mateId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="releaseTime != null" >
+        #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expireTime != null" >
+        #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="messageType != null" >
+        #{messageType,jdbcType=TINYINT},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="conDetail != null" >
+        #{conDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.huazhu.application.cms.wechat.comment.entity.ConInfoExample" resultType="java.lang.Integer" >
+    select count(*) from con_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update con_info
+    <set >
+      <if test="record.rowId != null" >
+        row_id = #{record.rowId,jdbcType=BIGINT},
+      </if>
+      <if test="record.conTitle != null" >
+        con_title = #{record.conTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.conDesc != null" >
+        con_desc = #{record.conDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.conType != null" >
+        con_type = #{record.conType,jdbcType=TINYINT},
+      </if>
+      <if test="record.conTag != null" >
+        con_tag = #{record.conTag,jdbcType=BIGINT},
+      </if>
+      <if test="record.conShare != null" >
+        con_share = #{record.conShare,jdbcType=TINYINT},
+      </if>
+      <if test="record.conMessage != null" >
+        con_message = #{record.conMessage,jdbcType=TINYINT},
+      </if>
+      <if test="record.conOrg != null" >
+        con_org = #{record.conOrg,jdbcType=BIGINT},
+      </if>
+      <if test="record.orgType != null" >
+        org_type = #{record.orgType,jdbcType=TINYINT},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null" >
+        create_user = #{record.createUser,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastUpdateDate != null" >
+        last_update_date = #{record.lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastUpdateUser != null" >
+        last_update_user = #{record.lastUpdateUser,jdbcType=BIGINT},
+      </if>
+      <if test="record.activeFlag != null" >
+        active_flag = #{record.activeFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.conUrl != null" >
+        con_url = #{record.conUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mateId != null" >
+        mate_id = #{record.mateId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.releaseTime != null" >
+        release_time = #{record.releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expireTime != null" >
+        expire_time = #{record.expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.messageType != null" >
+        message_type = #{record.messageType,jdbcType=TINYINT},
+      </if>
+      <if test="record.keyword != null" >
+        keyword = #{record.keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.conDetail != null" >
+        con_detail = #{record.conDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update con_info
+    set row_id = #{record.rowId,jdbcType=BIGINT},
+      con_title = #{record.conTitle,jdbcType=VARCHAR},
+      con_desc = #{record.conDesc,jdbcType=VARCHAR},
+      con_type = #{record.conType,jdbcType=TINYINT},
+      con_tag = #{record.conTag,jdbcType=BIGINT},
+      con_share = #{record.conShare,jdbcType=TINYINT},
+      con_message = #{record.conMessage,jdbcType=TINYINT},
+      con_org = #{record.conOrg,jdbcType=BIGINT},
+      org_type = #{record.orgType,jdbcType=TINYINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=BIGINT},
+      last_update_date = #{record.lastUpdateDate,jdbcType=TIMESTAMP},
+      last_update_user = #{record.lastUpdateUser,jdbcType=BIGINT},
+      active_flag = #{record.activeFlag,jdbcType=TINYINT},
+      con_url = #{record.conUrl,jdbcType=VARCHAR},
+      mate_id = #{record.mateId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      release_time = #{record.releaseTime,jdbcType=TIMESTAMP},
+      expire_time = #{record.expireTime,jdbcType=TIMESTAMP},
+      message_type = #{record.messageType,jdbcType=TINYINT},
+      keyword = #{record.keyword,jdbcType=VARCHAR},
+      con_detail = #{record.conDetail,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update con_info
+    set row_id = #{record.rowId,jdbcType=BIGINT},
+      con_title = #{record.conTitle,jdbcType=VARCHAR},
+      con_desc = #{record.conDesc,jdbcType=VARCHAR},
+      con_type = #{record.conType,jdbcType=TINYINT},
+      con_tag = #{record.conTag,jdbcType=BIGINT},
+      con_share = #{record.conShare,jdbcType=TINYINT},
+      con_message = #{record.conMessage,jdbcType=TINYINT},
+      con_org = #{record.conOrg,jdbcType=BIGINT},
+      org_type = #{record.orgType,jdbcType=TINYINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=BIGINT},
+      last_update_date = #{record.lastUpdateDate,jdbcType=TIMESTAMP},
+      last_update_user = #{record.lastUpdateUser,jdbcType=BIGINT},
+      active_flag = #{record.activeFlag,jdbcType=TINYINT},
+      con_url = #{record.conUrl,jdbcType=VARCHAR},
+      mate_id = #{record.mateId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      release_time = #{record.releaseTime,jdbcType=TIMESTAMP},
+      expire_time = #{record.expireTime,jdbcType=TIMESTAMP},
+      message_type = #{record.messageType,jdbcType=TINYINT},
+      keyword = #{record.keyword,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huazhu.application.cms.wechat.comment.entity.ConInfo" >
+    update con_info
+    <set >
+      <if test="conTitle != null" >
+        con_title = #{conTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="conDesc != null" >
+        con_desc = #{conDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="conType != null" >
+        con_type = #{conType,jdbcType=TINYINT},
+      </if>
+      <if test="conTag != null" >
+        con_tag = #{conTag,jdbcType=BIGINT},
+      </if>
+      <if test="conShare != null" >
+        con_share = #{conShare,jdbcType=TINYINT},
+      </if>
+      <if test="conMessage != null" >
+        con_message = #{conMessage,jdbcType=TINYINT},
+      </if>
+      <if test="conOrg != null" >
+        con_org = #{conOrg,jdbcType=BIGINT},
+      </if>
+      <if test="orgType != null" >
+        org_type = #{orgType,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=BIGINT},
+      </if>
+      <if test="activeFlag != null" >
+        active_flag = #{activeFlag,jdbcType=TINYINT},
+      </if>
+      <if test="conUrl != null" >
+        con_url = #{conUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mateId != null" >
+        mate_id = #{mateId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="releaseTime != null" >
+        release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expireTime != null" >
+        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="messageType != null" >
+        message_type = #{messageType,jdbcType=TINYINT},
+      </if>
+      <if test="keyword != null" >
+        keyword = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="conDetail != null" >
+        con_detail = #{conDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.huazhu.application.cms.wechat.comment.entity.ConInfo" >
+    update con_info
+    set con_title = #{conTitle,jdbcType=VARCHAR},
+      con_desc = #{conDesc,jdbcType=VARCHAR},
+      con_type = #{conType,jdbcType=TINYINT},
+      con_tag = #{conTag,jdbcType=BIGINT},
+      con_share = #{conShare,jdbcType=TINYINT},
+      con_message = #{conMessage,jdbcType=TINYINT},
+      con_org = #{conOrg,jdbcType=BIGINT},
+      org_type = #{orgType,jdbcType=TINYINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=BIGINT},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=BIGINT},
+      active_flag = #{activeFlag,jdbcType=TINYINT},
+      con_url = #{conUrl,jdbcType=VARCHAR},
+      mate_id = #{mateId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      message_type = #{messageType,jdbcType=TINYINT},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      con_detail = #{conDetail,jdbcType=LONGVARCHAR}
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huazhu.application.cms.wechat.comment.entity.ConInfo" >
+    update con_info
+    set con_title = #{conTitle,jdbcType=VARCHAR},
+      con_desc = #{conDesc,jdbcType=VARCHAR},
+      con_type = #{conType,jdbcType=TINYINT},
+      con_tag = #{conTag,jdbcType=BIGINT},
+      con_share = #{conShare,jdbcType=TINYINT},
+      con_message = #{conMessage,jdbcType=TINYINT},
+      con_org = #{conOrg,jdbcType=BIGINT},
+      org_type = #{orgType,jdbcType=TINYINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=BIGINT},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=BIGINT},
+      active_flag = #{activeFlag,jdbcType=TINYINT},
+      con_url = #{conUrl,jdbcType=VARCHAR},
+      mate_id = #{mateId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      message_type = #{messageType,jdbcType=TINYINT},
+      keyword = #{keyword,jdbcType=VARCHAR}
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+</mapper>

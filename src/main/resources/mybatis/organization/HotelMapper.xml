@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huazhu.application.cms.organization.dao.HotelMapper">
+    <sql id="ObjectSql">
+	   row_id as "rowId",
+	   chinese_name as "hotelChineseName",
+	   english_name as "hotelEnglishName",
+	   brand_id as "brandId",
+	   qr_tictek as "qrTictek",
+	   scene_str as "sceneStr",
+	   create_date as "createDate",
+	   create_user as "createUser",
+	   last_update_date as "lastUpdateDate",
+	   last_update_user as "lastUpdateUser",
+	   active_flag as "activeFlag"
+   </sql>
+   <!-- 条件查询 -->
+   <select id="queryHotel" resultType="com.huazhu.application.cms.organization.entity.Hotel" parameterType="com.huazhu.application.cms.organization.entity.Hotel">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM org_hotel
+       WHERE 1=1
+       <if test=" rowId != null "> AND row_id = #{rowId}</if>
+       <if test=" hotelChineseName != null and hotelChineseName != '' "> AND chinese_name = #{hotelChineseName}</if>
+       <if test=" hotelEnglishName != null and hotelEnglishName != '' "> AND english_name = #{hotelEnglishName}</if>
+       <if test=" brandId != null and brandId != '' "> AND brand_id = #{brandId}</if>
+       <if test=" createDate != null and createDate != '' "> AND create_date = #{createDate}</if>
+       <if test=" createUser != null and createUser != '' "> AND create_user = #{createUser}</if>
+       <if test=" lastUpdateDate != null and lastUpdateDate != '' "> AND last_update_date = #{lastUpdateDate}</if>
+       <if test=" lastUpdateUser != null and lastUpdateUser != '' "> AND last_update_user = #{lastUpdateUser}</if>
+       <if test=" activeFlag != null and activeFlag != 0 "> AND active_flag = #{activeFlag}</if>
+   </select>
+   
+   <select id="queryHotelByRowId" resultType="com.huazhu.application.cms.organization.entity.Hotel" parameterType="java.lang.Long">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM org_hotel
+       WHERE row_id = #{rowId}
+   </select>
+   
+   <!-- 条件模糊查询 -->
+   <select id="queryBrandByConditions" resultType="com.huazhu.application.cms.organization.entity.Hotel" parameterType="com.huazhu.application.cms.organization.entity.Hotel">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM org_hotel
+       WHERE 1=1
+       <if test=" rowId != null "> AND row_id = #{rowId}</if>
+       <if test=" hotelChineseName != null "> AND chinese_name = LIKE CONCAT('%',#{hotelChineseName},'%' )</if>
+       <if test=" hotelEnglishName != null "> AND english_name = #{hotelEnglishName}</if>
+       <if test=" groupId != null "> AND group_id = #{groupId}</if>
+       <if test=" createDate != null "> AND create_date = #{createDate} </if>
+       <if test=" createUser != null "> AND create_user = #{createUser} </if>
+       <if test=" lastUpdateDate != null "> AND last_update_date = #{lastUpdateDate} </if>
+       <if test=" lastUpdateUser != null "> AND last_update_user = #{lastUpdateUser} </if>
+       <if test=" activeFlag != null and activeFlag != 0 "> AND active_flag = #{activeFlag} </if>
+   </select>
+   
+   <!-- 新增 -->
+   <insert id="insertHotel" parameterType="com.huazhu.application.cms.organization.entity.Hotel" useGeneratedKeys="true">
+        INSERT INTO org_hotel
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        
+			<if test=" rowId != null " > row_id , </if>
+			<if test=" hotelChineseName != null "> chinese_name , </if>
+            <if test=" hotelEnglishName != null "> english_name , </if>
+            <if test=" brandId != null "> brand_id , </if>
+            <if test=" qrTictek != null "> qr_tictek , </if>
+            <if test=" sceneStr != null "> scene_str , </if>
+			<if test=" createDate != null "> create_date , </if>
+			<if test=" createUser != null "> create_user , </if>
+			<if test=" lastUpdateDate != null "> last_update_date , </if>
+			<if test=" lastUpdateUser != null "> last_update_user , </if>
+			<if test=" activeFlag != null "> active_flag , </if>
+			
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+		
+			<if test=" rowId != null "> #{rowId} , </if>
+			<if test=" hotelChineseName != null "> #{hotelChineseName} , </if>
+            <if test=" hotelEnglishName != null "> #{hotelEnglishName} , </if>
+            <if test=" brandId != null "> #{brandId} , </if>
+            <if test=" qrTictek != null "> #{qrTictek} , </if>
+            <if test=" sceneStr != null "> #{sceneStr} , </if>
+			<if test=" createDate != null "> #{createDate} , </if>
+			<if test=" createUser != null "> #{createUser} , </if>
+			<if test=" lastUpdateDate != null "> #{lastUpdateDate} , </if>
+			<if test=" lastUpdateUser != null "> #{lastUpdateUser} , </if>
+			<if test=" activeFlag != null "> #{activeFlag} , </if>
+			
+		</trim>
+   </insert>
+   
+   <!-- 编辑 -->
+   <update id="updateHotelByRowId" parameterType="com.huazhu.application.cms.organization.entity.Hotel">
+        UPDATE org_hotel
+		<set>
+			<if test=" hotelChineseName != null "> chinese_name = #{hotelChineseName} , </if>
+            <if test=" hotelEnglishName != null "> english_name = #{hotelEnglishName} , </if>
+            <if test=" brandId != null "> brand_id = #{brandId} , </if>
+			<if test=" lastUpdateDate != null "> last_update_date = #{lastUpdateDate} , </if>
+			<if test=" lastUpdateUser != null "> last_update_user = #{lastUpdateUser} , </if>
+			<if test=" activeFlag != null "> active_flag = #{activeFlag} , </if>
+		</set>
+		WHERE
+			row_id = #{rowId}
+   
+   </update>
+   
+   
+   <delete id="deleteHotelByRowId" parameterType="java.lang.Long">
+        DELETE FROM org_hotel WHERE row_id = #{rowId}
+   </delete>
+   
+   <!-- 通过品牌查询酒店 -->
+   <select id="queryHotelByBrandId" resultType="com.huazhu.application.cms.organization.entity.Hotel" parameterType="java.lang.Long">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM org_hotel
+       WHERE brand_id = #{brandId}
+   </select>
+
+    <select id="queryHotelById" resultType="com.huazhu.application.cms.organization.entity.Hotel">
+        SELECT
+            row_id AS rowId,
+            chinese_name AS chineseName,
+            english_name AS englishName
+        FROM
+            org_hotel
+        WHERE
+            row_id IN (${hotelId})
+        AND active_flag = #{activeFlag}
+    </select>
+
+    <select id="getHotelByShare" resultType="com.huazhu.application.cms.organization.entity.Hotel">
+        SELECT
+            row_id AS rowId,
+            chinese_name AS chineseName,
+            english_name AS englishName
+        FROM
+            org_hotel o
+        LEFT JOIN con_info c ON o.row_id = c.con_org
+        WHERE
+            con_share = 20
+        AND expire_time >= NOW()
+        AND c.active_flag = 10
+        AND brand_id=#{brandId}
+    </select>
+
+</mapper>

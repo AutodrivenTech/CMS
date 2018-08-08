@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huazhu.application.cms.tags.dao.TagsMapper">
+   <sql id="ObjectSql">
+	   row_id as "rowId",
+	   tab_chinese_name as "tabChineseName",
+	   tag_englist_name as "tagEnglistName",
+	   tag_type as "tagType",
+	   create_date as "createDate",
+	   create_user as "createUser",
+	   last_update_date as "lastUpdateDate",
+	   last_update_user as "lastUpdateUser",
+	   active_flag as "activeFlag"
+   </sql>
+   
+   
+
+   <!-- 模糊条件差序 -->
+   <select id="queryTagsConditions" parameterType="com.huazhu.application.cms.tags.entity.Tags" resultType="com.huazhu.application.cms.tags.entity.Tags">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM tag_info
+       WHERE 1=1
+       <if test=" rowId != null "> AND row_id = #{rowId}</if>
+       <if test=" tabChineseName != null and tabChineseName!=''"> AND tab_chinese_name LIKE CONCAT('%',#{tabChineseName},'%' ) </if>
+       <if test=" tagEnglistName != null and tagEnglistName!=''"> AND tag_englist_name LIKE CONCAT('%',#{tagEnglistName},'%' ) </if>
+       <if test=" tagType != null and tagType!=0"> AND tag_type = #{tagType} </if>
+       <if test=" createDate != null "> AND create_date = #{createDate} </if>
+       <if test=" createUser != null "> AND create_user = #{createUser} </if>
+       <if test=" lastUpdateDate != null "> AND last_update_date = #{lastUpdateDate} </if>
+       <if test=" lastUpdateUser != null "> AND last_update_user = #{lastUpdateUser} </if>
+       <if test=" activeFlag != null "> AND active_flag = #{activeFlag} </if>
+   </select>
+   
+   <select id="queryTagsByRowId" resultType="com.huazhu.application.cms.tags.entity.Tags" parameterType="java.lang.Long">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM tag_info
+       WHERE row_id = #{rowId}
+   </select>
+
+
+    <select id="queryTagsByRowName" resultType="com.huazhu.application.cms.tags.entity.Tags">
+        SELECT
+        <include refid="ObjectSql"/>
+        FROM tag_info
+        WHERE tab_chinese_name = #{tagName} AND  active_flag=10
+              AND tag_type=#{type}
+    </select>
+   
+   <insert id="insertTags" parameterType="com.huazhu.application.cms.tags.entity.Tags" useGeneratedKeys="true" keyProperty="rowId" keyColumn="row_id">
+        INSERT INTO tag_info
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test=" rowId != null" > row_id , </if>
+			<if test=" tabChineseName != null" > tab_chinese_name , </if>
+			<if test=" tagEnglistName != null" > tag_englist_name , </if>
+			<if test=" tagType != null" > tag_type , </if>
+			<if test=" createDate != null" > create_date , </if>
+			<if test=" createUser != null" > create_user , </if>
+			<if test=" lastUpdateDate != null" > last_update_date , </if>
+			<if test=" lastUpdateUser != null" > last_update_user , </if>
+			<if test=" activeFlag != null" > active_flag , </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test=" rowId != null" > #{rowId} , </if>
+			<if test=" tabChineseName != null" > #{tabChineseName} , </if>
+			<if test=" tagEnglistName != null" > #{tagEnglistName} , </if>
+			<if test=" tagType != null" > #{tagType} , </if>
+			<if test=" createDate != null" > #{createDate} , </if>
+			<if test=" createUser != null" > #{createUser} , </if>
+			<if test=" lastUpdateDate != null" > #{lastUpdateDate} , </if>
+			<if test=" lastUpdateUser != null" > #{lastUpdateUser} , </if>
+			<if test=" activeFlag != null" > #{activeFlag} , </if>
+		</trim>
+   </insert>
+   
+   <update id="updateTags" parameterType="com.huazhu.application.cms.tags.entity.Tags">
+        UPDATE tag_info
+		<set>
+            last_update_date = #{lastUpdateDate}
+			<if test=" tabChineseName != null and tabChineseName!=''" > ,tab_chinese_name = #{tabChineseName} </if>
+			<if test=" tagEnglistName != null" > ,tag_englist_name = #{tagEnglistName} </if>
+			<if test=" tagType != null and tagType!=0" >, tag_type = #{tagType} </if>
+			<if test=" lastUpdateUser != null" > ,last_update_user = #{lastUpdateUser}  </if>
+			<if test=" activeFlag != null and activeFlag!=0" > ,active_flag = #{activeFlag}  </if>
+		</set>
+		WHERE
+			row_id = #{rowId}
+   
+   </update>
+   
+
+    <select id="queryTagsById"  resultType="com.huazhu.application.cms.tags.entity.Tags">
+        SELECT
+            row_id AS rowId,
+            tab_chinese_name AS tabChineseName,
+            tag_englist_name AS tagEnglistName
+        FROM
+            tag_info
+        WHERE
+            row_id IN (${tagId})
+        AND active_flag = #{activeflag}
+    </select>
+
+    <select id="queryTagsInfo" resultType="com.huazhu.application.cms.tags.entity.Tags">
+            SELECT DISTINCT
+                t.row_id AS rowId,
+                tab_chinese_name AS tabChineseName,
+                tag_englist_name AS  tagEnglistName
+            FROM
+                tag_info t
+            INNER JOIN con_info c ON t.row_id = c.con_tag
+            WHERE t.active_flag=#{activeFlag}
+                    AND c.active_flag=#{activeFlag}
+    </select>
+
+</mapper>

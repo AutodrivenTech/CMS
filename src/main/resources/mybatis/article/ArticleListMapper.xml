@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huazhu.application.cms.article.dao.ArticleListMapper">
+    <sql id="ObjectSql">
+	   row_id as "rowId",
+	   con_title as "conTitle",
+	   create_date as "createDate",
+	   create_user as "createUser",
+	   last_update_date as "lastUpdateDate",
+	   last_update_user as "lastUpdateUser",
+	   active_flag as "activeFlag",
+	   con_org as  conOrg,
+	   org_type as  orgType,
+   </sql>
+   <!-- 条件查询 -->
+   <select id="queryArticleList" resultType="com.huazhu.application.cms.article.dto.ArticleListDTO" parameterType="com.huazhu.application.cms.article.entity.ArticleList">
+       SELECT
+		   row_id as "rowId",
+		   con_title as "conTitle"
+       FROM con_list_info
+       WHERE active_flag=#{activeFlag}
+       <if test=" rowId != null "> AND row_id = #{rowId}</if>
+       <if test=" conTitle != null "> AND con_title LIKE CONCAT('%',#{conTitle},'%' )</if>
+       <if test=" createDate != null "> AND create_date = #{createDate}</if>
+       <if test=" createUser != null "> AND create_user = #{createUser}</if>
+       <if test=" lastUpdateDate != null "> AND last_update_date = #{lastUpdateDate}</if>
+       <if test=" lastUpdateUser != null "> AND last_update_user = #{lastUpdateUser}</if>
+       <if test=" conOrg != null "> AND con_org = #{conOrg}</if>
+	   <if test=" orgType != null "> AND org_type = #{orgType}</if>
+   </select>
+
+
+   
+   <!-- 新增 -->
+   <insert id="insertArticleList" parameterType="com.huazhu.application.cms.article.entity.ArticleList" useGeneratedKeys="true" keyProperty="rowId" keyColumn="row_id">
+        INSERT INTO con_list_info
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+	        <if test=" conTitle != null  and conTitle!=''"> con_title , </if>
+			<if test=" createDate != null "> create_date , </if>
+			<if test=" createUser != null "> create_user , </if>
+			<if test=" lastUpdateDate != null "> last_update_date , </if>
+			<if test=" lastUpdateUser != null "> last_update_user , </if>
+			<if test=" activeFlag != null "> active_flag , </if>
+			<if test=" conOrg != null and conOrg!=0"> con_org , </if>
+			<if test=" orgType != null and orgType!=0 "> org_type , </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+
+			<if test=" conTitle != null and conTitle!=''"> #{conTitle} , </if>
+			<if test=" createDate != null "> #{createDate} , </if>
+			<if test=" createUser != null "> #{createUser} , </if>
+			<if test=" lastUpdateDate != null "> #{lastUpdateDate} , </if>
+			<if test=" lastUpdateUser != null "> #{lastUpdateUser} , </if>
+			<if test=" activeFlag != null and activeFlag!=0"> #{activeFlag} , </if>
+			<if test=" conOrg != null and conOrg!=0"> #{conOrg} , </if>
+			<if test=" orgType != null and orgType!=0"> #{orgType} , </if>
+		</trim>
+   </insert>
+   
+   <!-- 编辑 -->
+   <update id="updateArticleListByRowId" parameterType="com.huazhu.application.cms.article.entity.ArticleList">
+        UPDATE con_list_info
+		<set>
+			last_update_date = #{lastUpdateDate}
+	        <if test=" conTitle != null and conTitle!=''">, con_title = #{conTitle}  </if>
+			<if test=" conOrg != null and conOrg!=0"> ,con_org=#{conOrg}  </if>
+			<if test=" orgType != null and orgType!=0"> ,org_type=#{orgType} </if>
+			<if test=" lastUpdateUser != null ">, last_update_user = #{lastUpdateUser} </if>
+			<if test=" activeFlag != null and activeFlag!=0">, active_flag = #{activeFlag} </if>
+		</set>
+		WHERE
+			row_id = #{rowId}
+   
+   </update>
+   
+   
+
+   
+   <!-- 新增文章、文章列表中间表 -->
+   <insert id="insertArticleListDetail" parameterType="com.huazhu.application.cms.article.entity.ArticleListDetail" useGeneratedKeys="true">
+        INSERT INTO con_list_detail
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test=" conListId != null " > con_list_id , </if>
+			<if test=" conId != null " > con_id , </if>
+			<if test=" orderNum != null " > order_num , </if>
+			<if test=" createDate != null "> create_date , </if>
+			<if test=" createUser != null "> create_user , </if>
+			<if test=" lastUpdateDate != null "> last_update_date , </if>
+			<if test=" lastUpdateUser != null "> last_update_user , </if>
+			<if test=" activeFlag != null "> active_flag , </if>
+			
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test=" conListId != null " > #{conListId} , </if>
+			<if test=" conId != null " > #{conId} , </if>
+			<if test=" orderNum != null " > #{orderNum} , </if>
+			<if test=" createDate != null "> #{createDate} , </if>
+			<if test=" createUser != null "> #{createUser} , </if>
+			<if test=" lastUpdateDate != null "> #{lastUpdateDate} , </if>
+			<if test=" lastUpdateUser != null "> #{lastUpdateUser} , </if>
+			<if test=" activeFlag != null "> #{activeFlag} , </if>
+			
+		</trim>
+   </insert>
+   
+   <!-- 删除文章、文章列表中间表 -->
+   <delete id="deleteConlistDetail" parameterType="java.lang.Long">
+        DELETE FROM con_list_detail WHERE con_list_id = #{conListId}
+   </delete>
+
+
+	<select id="queryArticleListById" resultType="com.huazhu.application.cms.article.dto.ArticleListDTO" >
+		SELECT
+		row_id as "rowId",
+		con_title as "conTitle"
+		FROM con_list_info
+		WHERE
+				row_id=#{rowId}
+	</select>
+
+</mapper>

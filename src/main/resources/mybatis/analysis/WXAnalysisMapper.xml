@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huazhu.application.cms.analysis.dao.WXAnalysisMapper">
+   
+  
+   
+   <!-- 新增 -->
+   <insert id="insertarticlesummary" parameterType="weixin.popular.bean.datacube.article.Usershare" useGeneratedKeys="true">
+        INSERT INTO wx_getarticle_summary_runing
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        
+			<if test=" ref_date != null "> ref_date , </if>
+	        <if test=" msgid != null "> msgid , </if>
+	        <if test=" title != null "> title , </if>
+	        <if test=" int_page_read_user != null "> int_page_read_user , </if>
+	        <if test=" int_page_read_count != null "> int_page_read_count , </if>
+	        <if test=" ori_page_read_user != null "> ori_page_read_user , </if>
+	        <if test=" ori_page_read_count != null "> ori_page_read_count , </if>
+			<if test=" share_user != null "> share_user , </if>
+			<if test=" share_count != null "> share_count , </if>
+			<if test=" add_to_fav_user != null "> add_to_fav_user , </if>
+			<if test=" add_to_fav_count != null "> add_to_fav_count , </if>
+			<if test=" create_time != null "> create_time , </if>
+			
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+		
+			<if test=" ref_date != null "> #{ref_date} , </if>
+	        <if test=" msgid != null "> #{msgid} , </if>
+	        <if test=" title != null "> #{title} , </if>
+	        <if test=" int_page_read_user != null "> #{int_page_read_user} , </if>
+	        <if test=" int_page_read_count != null "> #{int_page_read_count} , </if>
+	        <if test=" ori_page_read_user != null "> #{ori_page_read_user} , </if>
+	        <if test=" ori_page_read_count != null "> #{ori_page_read_count} , </if>
+			<if test=" share_user != null "> #{share_user} , </if>
+			<if test=" share_count != null "> #{share_count} , </if>
+			<if test=" add_to_fav_user != null "> #{add_to_fav_user} , </if>
+			<if test=" add_to_fav_count != null "> #{add_to_fav_count} , </if>
+			
+		</trim>
+   </insert>
+   
+   
+   
+   
+   <delete id="deletearticlesummary" parameterType="java.lang.Long">
+        DELETE FROM wx_getarticle_summary_runing WHERE create_time &lt; DATE_ADD(NOW(),INTERVAL -6 month)
+   </delete>
+   
+   <select id="getmontharticlesummary" resultType="com.huazhu.application.cms.analysis.entity.ArticleReadCount" parameterType="java.lang.Long">
+        SELECT
+			gsr.title,
+			sur.readCount,
+			gsr.msgid
+		FROM
+			wx_getarticle_summary_runing gsr,
+			(
+				SELECT
+					su.title,
+					SUM(su.int_page_read_count) readCount
+				FROM
+					wx_getarticle_summary_runing su
+		    WHERE
+		      su.create_time &gt;= STR_TO_DATE(DATE_FORMAT(DATE_ADD(NOW(),INTERVAL -1 month),'%Y-%m-02'),'%Y-%m-%d')
+		      AND su.create_time &lt; STR_TO_DATE(DATE_FORMAT(NOW(),'%Y-%m-02'),'%Y-%m-%d')
+				GROUP BY
+					su.title
+			) sur
+		  <if test="hotelId != null">
+		      ,con_info ci 
+		  </if>
+		WHERE
+			gsr.title = sur.title 
+		  <if test="hotelId != null">
+		      AND ci.con_title = gsr.title 
+		      AND ci.con_org = #{hotelId}
+		  </if>
+		  AND gsr.create_time &gt;= STR_TO_DATE(DATE_FORMAT(DATE_ADD(NOW(),INTERVAL -1 month),'%Y-%m-02'),'%Y-%m-%d')
+		  AND gsr.create_time &lt; STR_TO_DATE(DATE_FORMAT(NOW(),'%Y-%m-02'),'%Y-%m-%d')
+		  
+   </select>
+   
+   <select id="articleToOrg" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT DISTINCT
+               CASE pai.org_type
+		       WHEN 10 THEN '雅高集团'
+		       WHEN 20 THEN (SELECT h.chinese_name FROM org_hotel h WHERE h.row_id = pai.con_org)
+		       END as org 
+		FROM con_info ci,push_apply_info pai WHERE ci.row_id = pai.push_con AND ci.con_title #{title}
+		UNION
+		SELECT DISTINCT
+		       CASE pai.org_type
+		       WHEN 10 THEN '雅高集团'
+		       WHEN 20 THEN (SELECT h.chinese_name FROM org_hotel h WHERE h.row_id = pai.con_org)
+		       END as org 
+		FROM con_info ci,con_list_detail cld,con_list_info cli,push_apply_info pai 
+		WHERE ci.row_id = cld.con_id AND cld.con_list_id = cli.row_id AND cli.row_id = pai.push_con 
+		AND ci.con_title = #{title}
+   
+   </select>
+
+	<select id="getReadCount" resultType="java.lang.Integer">
+		SELECT
+			SUM(int_page_read_count)
+		FROM
+			wx_getarticle_summary_runing
+		WHERE
+			title = #{title}
+	</select>
+</mapper>

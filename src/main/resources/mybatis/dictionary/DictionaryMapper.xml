@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huazhu.application.cms.dictionary.dao.DictionaryMapper">
+    <sql id="ObjectSql">
+	   id as "id",
+	   code as "code",
+	   value as "value",
+	   create_date as "createDate",
+	   create_user as "createUser",
+	   last_update_date as "lastUpdateDate",
+	   last_update_user as "lastUpdateUser",
+	   active_flag as "activeFlag"
+   </sql>
+   <!-- 条件查询 -->
+   <select id="queryDictionary" resultType="com.huazhu.application.cms.dictionary.entity.Dictionary" parameterType="com.huazhu.application.cms.dictionary.entity.Dictionary">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM dictionary
+       WHERE active_flag = 10
+       <if test=" id != null "> AND id = #{id}</if>
+       <if test=" code != null "> AND code = #{code}</if>
+       <if test=" value != null "> AND value = #{value}</if>
+       <if test=" createDate != null "> AND create_date = #{createDate}</if>
+       <if test=" createUser != null "> AND create_user = #{createUser}</if>
+       <if test=" lastUpdateDate != null "> AND last_update_date = #{lastUpdateDate}</if>
+       <if test=" lastUpdateUser != null "> AND last_update_user = #{lastUpdateUser}</if>
+   </select>
+   
+   <update id="updateDictionarycmsToken" parameterType="java.lang.String">
+       UPDATE dictionary
+	   SET value = #{value} ,last_update_date = NOW()
+	   WHERE
+			code = 'CMS-TOKEN'
+   </update>
+   
+   
+
+</mapper>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.huazhu.application.cms.activity.dao.ActivityDetailInfoMapper">
+
+    <resultMap type="com.huazhu.application.cms.activity.entity.ActivityDetailInfo" id="BaseResultMap">
+        <result property="rowId" column="row_id"/>
+        <result property="actId" column="act_id"/>
+        <result property="actDetailName" column="act_detail_name"/>
+        <result property="actDetailType" column="act_detail_type"/>
+        <result property="actDetailCon" column="act_detail_con"/>
+        <result property="actDetailUrl" column="act_detail_url"/>
+        <result property="actDetailCount" column="act_detail_count"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="createDate" column="create_date"/>
+        <result property="createUser" column="create_user"/>
+        <result property="lastUpdateDate" column="last_update_date"/>
+        <result property="lastUpdateUser" column="last_update_user"/>
+        <result property="activeFlag" column="active_flag"/>
+
+    </resultMap>
+
+    <select id="queryAll" resultType="com.huazhu.application.cms.activity.dto.ActivityDetailInfoDTO">
+            SELECT
+                a.row_id AS rowId,
+                act_id AS actId,
+                act_detail_name AS actDetailName,
+                act_detail_type AS actDetailType,
+                act_detail_url AS actDetailUrl,
+                act_detail_con AS actDetailCon,
+                act_detail_count AS actDetailCount,
+                (
+                    CASE act_detail_type
+                    WHEN '10' THEN
+                        c.con_title
+                    WHEN '20' THEN
+                        l.con_title
+                    ELSE
+                        '其他'
+                    END	) AS actDetailTitle
+            FROM
+                act_detail_info a
+            LEFT JOIN con_list_info l ON a.act_detail_con = l.row_id  AND l.active_flag = #{activeFlag}
+            LEFT JOIN con_info c ON a.act_detail_con = c.row_id  AND c.active_flag = #{activeFlag}
+            WHERE
+                a.active_flag = #{activeFlag}
+            AND act_id = #{actId}
+    </select>
+
+
+    <select id="queryById" resultType="com.huazhu.application.cms.activity.dto.ActivityDetailInfoDTO">
+         SELECT
+            a.row_id AS rowId,
+            act_id AS actId,
+            act_detail_name AS actDetailName,
+            act_detail_type AS actDetailType,
+            act_detail_url AS actDetailUrl,
+            act_detail_con AS actDetailCon,
+            act_detail_count AS actDetailCount,
+           (
+            CASE act_detail_type
+            WHEN '10' THEN
+                c.con_title
+            WHEN '20' THEN
+                l.con_title
+            ELSE
+                '其他'
+            END	) AS actDetailTitle
+        FROM
+            act_detail_info a
+        LEFT JOIN con_list_info l ON a.act_detail_con = l.row_id
+        LEFT JOIN con_info c ON a.act_detail_con = c.row_id
+        WHERE
+         a.row_id = #{rowId}
+    </select>
+
+    <insert id="addActivity" parameterType="com.huazhu.application.cms.activity.entity.ActivityDetailInfo">
+        INSERT INTO act_detail_info (
+        <if test="actId!=null">
+            act_id
+        </if>
+        <if test="actDetailName!=null and actDetailName!=''">
+            ,act_detail_name
+        </if>
+        <if test="actDetailType!=null">
+            ,act_detail_type
+        </if>
+        <if test="actDetailCon!=null and actDetailCon!=''">
+            ,act_detail_con
+        </if>
+        <if test="actDetailUrl!=null and actDetailUrl!=''">
+            ,act_detail_url
+        </if>
+        <if test="actDetailCount!=null">
+            ,act_detail_count
+        </if>
+        <if test="orderNum!=null">
+            ,order_num
+        </if>
+        <if test="createDate!=null">
+            ,create_date
+        </if>
+        <if test="createUser!=null">
+            ,create_user
+        </if>
+        <if test="lastUpdateDate!=null">
+            ,last_update_date
+        </if>
+        <if test="lastUpdateUser!=null">
+            ,last_update_user
+        </if>
+        <if test="activeFlag!=null">
+            ,active_flag
+        </if>
+
+        )
+        VALUES(
+        <if test="actId!=null">
+            #{actId}
+        </if>
+        <if test="actDetailName!=null and actDetailName!=''">
+            ,#{actDetailName}
+        </if>
+        <if test="actDetailType!=null">
+            ,#{actDetailType}
+        </if>
+        <if test="actDetailCon!=null and actDetailCon!=''">
+            ,#{actDetailCon}
+        </if>
+        <if test="actDetailUrl!=null and actDetailUrl!=''">
+            ,#{actDetailUrl}
+        </if>
+        <if test="actDetailCount!=null">
+           , #{actDetailCount}
+        </if>
+        <if test="orderNum!=null">
+           , #{orderNum}
+        </if>
+        <if test="actDetailCount!=null">
+            ,#{createDate}
+        </if>
+        <if test="orderNum!=null">
+            ,#{createUser}
+        </if>
+        <if test="lastUpdateDate!=null">
+           , #{lastUpdateDate}
+        </if>
+        <if test="lastUpdateUser!=null">
+            ,#{lastUpdateUser},
+        </if>
+        <if test="activeFlag!=null">
+            ,#{activeFlag}
+        </if>
+
+        )
+    </insert>
+
+    <update id="update" parameterType="com.huazhu.application.cms.activity.entity.ActivityDetailInfo">
+        UPDATE act_detail_info
+        <set>
+            <if test="actId!=null">
+                act_id = #{actId},
+            </if>
+            <if test="actDetailName!=null and actDetailName!=''">
+                act_detail_name = #{actDetailName},
+            </if>
+            <if test="actDetailType!=null">
+                act_detail_type = #{actDetailType},
+            </if>
+            <if test="actDetailCon!=null and actDetailCon!=''">
+                act_detail_con = #{actDetailCon},
+            </if>
+            <if test="actDetailUrl!=null and actDetailUrl!=''">
+                act_detail_url = #{actDetailUrl},
+            </if>
+            <if test="actDetailCount!=null">
+                act_detail_count = #{actDetailCount},
+            </if>
+            <if test="orderNum!=null">
+                order_num = #{orderNum},
+            </if>
+            <if test="activeFlag!=null">
+                active_flag=#{activeFlag},
+            </if>
+            <if test="lastUpdateUser!=null">
+                last_update_user =#{lastUpdateUser},
+            </if>
+            last_update_date = #{lastUpdateDate}
+        </set>
+        WHERE
+            row_id = #{rowId}
+    </update>
+
+
+    <update id="updateDetail" parameterType="com.huazhu.application.cms.activity.entity.ActivityDetailInfo">
+        UPDATE act_detail_info
+        SET
+           active_flag=#{activeFlag},
+            last_update_user =#{lastUpdateUser},
+            last_update_date = #{lastUpdateDate}
+        WHERE
+            act_id =#{actId}
+    </update>
+
+    <update id="updateActDetailCount">
+         UPDATE act_detail_info
+        SET act_detail_count = act_detail_count + 1,
+            last_update_date = NOW()
+        WHERE
+            row_id = #{rowId}
+    </update>
+
+</mapper>

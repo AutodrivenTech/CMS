@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<title>CMS</title>
+<link rel="shortcut icon" th:href="@{/favicon.ico}" />
+<link rel="bookmark" th:href="@{/favicon.ico}" />
+<!-- Bootstrap Styles-->
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link th:href="@{lib/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.min.css}" rel="stylesheet" />
+<link th:href="@{lib/font-awesome-4.7.0/css/font-awesome.min.css}" rel="stylesheet" />
+<link th:href="@{lib/bootstrap-treeview-master/dist/bootstrap-treeview.min.css}" rel="stylesheet" />
+<link th:href="@{lib/bootstrap-tab-master/css/bootstrap-tab.css}" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+<link th:href="@{lib/Scroller-1.5.0/css/scroller.bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{local/css/base/interval.css}" rel="stylesheet" />
+</head>
+
+<body class="">
+	<!-- 小屏幕上水平导航栏会切换为垂直的 -->
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
+					<span class="sr-only">切换导航</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" th:href="@{/}">
+					<img src="bird.jpg" alt="Logo" style="width: 40px;">
+				</a>
+			</div>
+
+			<!-- Dropdown -->
+			<div class="collapse navbar-collapse navbar-right" id="navbarSupportedContent">
+				<ul class="nav navbar-nav">
+					<li>
+						<div class="switch">
+							<input type="checkbox" checked id="languageChange">
+						</div>
+					</li>
+					<li>
+						<ul class="nav navbar-nav">
+							<li class="dropdown">
+								<a class="dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+									<i class="fa fa-user"></i>
+									Alex
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a class="" href="#">
+											<i class="fa fa-user fa-fw"></i>
+											<span id="index_header_base_info">基本信息</span>
+										</a>
+									</li>
+									<li>
+										<a class="" href="#">
+											<i class="fa fa-gear fa-fw"></i>
+											<span id="index_header_system_setting">系统设置</span>
+										</a>
+									</li>
+									<li>
+										<a class="" href="#">
+											<i class="fa fa-sign-out fa-fw"></i>
+											<span id="index_header_exit">安全退出</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<br />
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3">
+				<div id="systemMenuTree"></div>
+			</div>
+			<div class="col-sm-9 ">
+				<div id="systemContentTabs"></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script th:src="@{lib/bootstrap-switch-master/dist/js/bootstrap-switch.min.js}"></script>
+	<script th:src="@{lib/bootstrap-treeview-master/dist/bootstrap-treeview.min.js}"></script>
+	<script th:src="@{lib/bootstrap-tab-master/js/bootstrap-tab.js}"></script>
+	<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+	<script th:src="@{lib/Scroller-1.5.0/js/dataTables.scroller.min.js}"></script>
+	<script th:src="@{local/js/index.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huazhu.application.cms.fans.dao.FansFilterMapper">
+        <resultMap id="BaseResultMap" type="com.huazhu.application.cms.fans.entity.FansFilter">
+            <result property="rowId" column="row_id"/>
+            <result property="name" column="name"/>
+            <result property="isOpen" column="is_open"/>
+            <result property="isFans" column="is_fans"/>
+            <result property="hotelId" column="hotel_id"/>
+            <result property="sex" column="sex"/>
+            <result property="startDate" column="start_date"/>
+            <result property="endDate" column="end_date"/>
+            <result property="country" column="country"/>
+            <result property="city" column="city"/>
+            <result property="province" column="province"/>
+            <result property="language" column="language"/>
+            <result property="surveyAge" column="survey_age"/>
+            <result property="abroadDestination" column="abroad_destination"/>
+            <result property="domesticDestination" column="domestic_destination"/>
+            <result property="activity" column="activity"/>
+            <result property="tagId" column="tag_id"/>
+            <result property="qrCode" column="qr_code"/>
+            <result property="createDate" column="create_date"/>
+            <result property="createUser" column="create_user"/>
+            <result property="lastUpdateDate" column="last_update_date"/>
+            <result property="lastUpdateUser" column="last_update_user"/>
+            <result property="activeFlag" column="active_flag"/>
+        </resultMap>
+
+
+    <select id="getFansFilterList" resultType="com.huazhu.application.cms.fans.dto.FansFilterResultDTO">
+        SELECT
+            row_id AS rowId,
+            NAME
+        FROM
+            fans_filter
+        WHERE active_flag=#{activeflag}
+          <if test="name!=null and name!=''">
+              AND `name`  LIKE CONCAT('%',#{name},'%')
+          </if>
+    </select>
+
+    <select id="getFansFilterDetail" resultType="com.huazhu.application.cms.fans.dto.FansFilterDTO">
+          SELECT
+            row_id AS rowId,
+            NAME AS `name`,
+            is_open AS isOpen,
+            is_fans AS isFans,
+            hotel_id AS hotelId,
+            sex,
+            start_date AS startDate,
+            end_date AS endDate,
+            country,
+            city,
+            province,
+            `language`,
+            survey_age AS surveyAge,
+            abroad_destination AS abroadDestination,
+            domestic_destination AS domesticDestination,
+            activity,
+            tag_id AS tagId,
+            qr_code AS qrCode,
+            active_flag AS activeFlag
+        FROM
+            fans_filter
+        WHERE
+         row_id = #{fansId}
+    </select>
+
+    
+    <insert id="addFilterFansInfo" parameterType="com.huazhu.application.cms.fans.entity.FansFilter">
+          INSERT INTO fans_filter (
+            <if test="name!=null and name!=''">
+                name
+            </if>
+            <if test="isOpen!=null">
+                ,is_open
+            </if>
+            <if test="isFans!=null">
+                ,is_fans
+            </if>
+            <if test="hotelId!=null">
+                ,hotel_id
+            </if>
+            <if test="sex!=null">
+                ,sex
+            </if>
+            <if test="startDate!=null ">
+                ,start_date
+            </if>
+            <if test="endDate!=null">
+                ,end_date
+            </if>
+            <if test="country!=null and country!=''">
+                ,country
+            </if>
+            <if test="city!=null and city!=''">
+                ,city
+            </if>
+            <if test="province!=null and province!=''">
+                ,province
+            </if>
+            <if test="language!=null and language!=''">
+                ,language
+            </if>
+            <if test="surveyAge!=null">
+                ,survey_age
+            </if>
+            <if test="abroadDestination!=null and abroadDestination!=''">
+                ,abroad_destination
+            </if>
+            <if test="domesticDestination!=null and domesticDestination!=''">
+                ,domestic_destination
+            </if>
+            <if test="activity!=null and activity!=''">
+                ,activity
+            </if>
+            <if test="tagId!=null and tagId!=''">
+                ,tag_id
+            </if>
+            <if test="qrCode!=null and qrCode!=''">
+                ,qr_code
+            </if>
+            <if test="createDate!=null">
+                ,create_date
+            </if>
+            <if test="createUser!=null">
+                ,create_user
+            </if>
+            <if test="lastUpdateDate!=null">
+                ,last_update_date
+            </if>
+            <if test="lastUpdateUser!=null">
+                ,last_update_user
+            </if>
+            <if test="activeFlag!=null">
+                ,active_flag
+            </if>
+        )
+        VALUES
+            (
+            <if test="name!=null and name!=''">
+               #{name}
+            </if>
+            <if test="isOpen!=null">
+                ,#{isOpen}
+            </if>
+            <if test="isFans!=null">
+                ,#{isFans}
+            </if>
+            <if test="hotelId!=null">
+                ,#{hotelId}
+            </if>
+            <if test="sex!=null">
+                ,#{sex}
+            </if>
+            <if test="startDate!=null ">
+                ,#{startDate}
+            </if>
+            <if test="endDate!=null">
+                ,#{endDate}
+            </if>
+            <if test="country!=null and country!=''">
+                ,#{country}
+            </if>
+            <if test="city!=null and city!=''">
+                ,#{city}
+            </if>
+            <if test="province!=null and province!=''">
+                ,#{province}
+            </if>
+            <if test="language!=null and language!=''">
+                ,#{language}
+            </if>
+            <if test="surveyAge!=null">
+                ,#{surveyAge}
+            </if>
+            <if test="abroadDestination!=null and abroadDestination!=''">
+                ,#{abroadDestination}
+            </if>
+            <if test="domesticDestination!=null and domesticDestination!=''">
+                ,#{domesticDestination}
+            </if>
+            <if test="activity!=null and activity!=''">
+                ,#{activity}
+            </if>
+            <if test="tagId!=null and tagId!=''">
+                ,#{tagId}
+            </if>
+            <if test="qrCode!=null and qrCode!=''">
+                ,#{qrCode}
+            </if>
+            <if test="createDate!=null">
+                ,#{createDate}
+            </if>
+            <if test="createUser!=null">
+                ,#{createUser}
+            </if>
+            <if test="lastUpdateDate!=null">
+                ,#{lastUpdateDate}
+            </if>
+            <if test="lastUpdateUser!=null">
+                ,#{lastUpdateUser}
+            </if>
+            <if test="activeFlag!=null">
+                ,#{activeFlag}
+            </if>
+        )
+    </insert>
+
+
+
+    <update id="udpateFansInfo" parameterType="com.huazhu.application.cms.fans.entity.FansFilter">
+        UPDATE fans_filter
+       <set>
+           <if test="name!=null and name!=''">
+               name=#{name}
+           </if>
+           <if test="isOpen!=null">
+               ,is_open=#{isOpen}
+           </if>
+           <if test="isFans!=null">
+               ,is_fans=#{isFans}
+           </if>
+           <if test="hotelId!=null">
+               ,hotel_id=#{hotelId}
+           </if>
+           <if test="sex!=null">
+               ,sex=#{sex}
+           </if>
+           <if test="startDate!=null ">
+               ,start_date=#{startDate}
+           </if>
+           <if test="endDate!=null">
+               ,end_date=#{endDate}
+           </if>
+           <if test="country!=null and country!=''">
+               ,country=#{country}
+           </if>
+           <if test="city!=null and city!=''">
+               ,city=#{city}
+           </if>
+           <if test="province!=null and province!=''">
+               ,province=#{province}
+           </if>
+           <if test="language!=null and language!=''">
+               ,language=#{language}
+           </if>
+           <if test="surveyAge!=null">
+               ,survey_age=#{surveyAge}
+           </if>
+           <if test="abroadDestination!=null and abroadDestination!=''">
+               ,abroad_destination#{abroadDestination}
+           </if>
+           <if test="domesticDestination!=null and domesticDestination!=''">
+               ,domestic_destination=#{domesticDestination}
+           </if>
+           <if test="activity!=null and activity!=''">
+               ,activity=#{activity}
+           </if>
+           <if test="tagId!=null and tagId!=''">
+               ,tagId=#{tagId}
+           </if>
+           <if test="qrCode!=null and qrCode!=''">
+               ,qr_code=#{qrCode}
+           </if>
+           <if test="lastUpdateDate!=null">
+               ,last_update_date=#{lastUpdateDate}
+           </if>
+           <if test="lastUpdateUser!=null">
+               ,last_update_user=#{lastUpdateUser}
+           </if>
+           <if test="activeFlag!=null">
+               ,active_flag=#{activeFlag}
+           </if>
+       </set>
+        WHERE
+            row_id = #{rowId}
+    </update>
+
+</mapper>

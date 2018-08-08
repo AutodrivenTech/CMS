@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huazhu.application.cms.account.dao.SysAccountInfoMapper" >
+    <resultMap id="BaseResultMap" type="com.huazhu.application.cms.account.entity.SysAccountInfo" >
+        <id column="row_id" property="rowId" jdbcType="BIGINT" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="user_passwd" property="userPasswd" jdbcType="VARCHAR" />
+        <result column="user_type" property="userType" jdbcType="TINYINT" />
+        <result column="user_org" property="userOrg" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="create_user" property="createUser" jdbcType="BIGINT" />
+        <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+        <result column="last_update_user" property="lastUpdateUser" jdbcType="BIGINT" />
+        <result column="active_flag" property="activeFlag" jdbcType="TINYINT" />
+        <result column="salt" property="salt" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        row_id, user_name, email, user_passwd, user_type, user_org, create_date, create_user,
+        last_update_date, last_update_user, active_flag, salt
+  </sql>
+
+    <select id="findByUserName" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM
+            sys_account_info
+        WHERE
+            user_name = #{userName} AND active_flag=#{activeFlag}
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT
+          <include refid="Base_Column_List"/>
+        FROM
+        sys_account_info
+        WHERE
+        row_id = #{rowId}
+    </select>
+
+    <select id="getAccountList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        sys_account_info
+        where
+        AND active_flag=#{activeFlag}
+    </select>
+    
+    <update id="updateAccountInfo" parameterType="com.huazhu.application.cms.account.entity.SysAccountInfo">
+        UPDATE sys_account_info
+        SET user_passwd = #{userPasswd}
+            , salt=#{salt}
+            , last_update_date=#{lastUpdateDate}
+        WHERE
+            row_id = #{rowId}
+    </update>
+
+    <insert id="addAccountInfo" parameterType="com.huazhu.application.cms.account.entity.SysAccountInfo">
+        INSERT INTO sys_account_info (
+          <if test="userName!=null and userName!=''">
+              user_name
+          </if>
+        <if test="email!=null and email!=''">
+            ,email
+        </if>
+        <if test="userPasswd!=null and userPasswd!=''">
+            ,user_passwd
+        </if>
+        <if test="userType!=null">
+            ,user_type
+        </if>
+        <if test="userOrg!=null">
+            ,user_org
+        </if>
+        <if test="createUser!=null">
+            ,create_user
+        </if>
+        <if test="lastUpdateUser!=null">
+            ,last_update_user
+        </if>
+        <if test="activeFlag!=null">
+            ,active_flag
+        </if>
+        <if test="salt!=null and salt!=''">
+            ,salt
+        </if>
+        ,last_update_date  ,create_date
+        )
+        VALUES
+            (
+        <if test="userName!=null and userName!=''">
+            #{userName}
+        </if>
+        <if test="email!=null and email!=''">
+            ,#{email}
+        </if>
+        <if test="userPasswd!=null and userPasswd!=''">
+            ,#{userPasswd}
+        </if>
+        <if test="userType!=null">
+            ,#{userType}
+        </if>
+        <if test="userOrg!=null">
+            ,#{userOrg}
+        </if>
+        <if test="createUser!=null">
+            ,#{createUser}
+        </if>
+        <if test="lastUpdateUser!=null">
+            ,#{lastUpdateUser}
+        </if>
+        <if test="activeFlag!=null">
+            ,#{activeFlag}
+        </if>
+        <if test="salt!=null and salt!=''">
+            ,#{salt}
+        </if>
+        ,#{lastUpdateDate},#{createDate}
+        )
+    </insert>
+
+
+</mapper>

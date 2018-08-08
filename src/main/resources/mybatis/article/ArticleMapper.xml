@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huazhu.application.cms.article.dao.ArticleMapper">
+    <sql id="ObjectSql">
+	   c.row_id as "rowId",
+	   img_url as "photoUrl",
+	   c.con_title as "conTitle",
+	   c.con_desc as "conDesc",
+	    c.con_type as "conType",
+	    c.con_detail as "conDetail",
+	   c.con_share as "conShare",
+	    c.con_message as "conMessage",
+	    c.create_date as "createDate",
+	    c.create_user as "createUser",
+	    c.last_update_date as "lastUpdateDate",
+	    c.last_update_user as "lastUpdateUser",
+	    c.active_flag as "activeFlag",
+	    c.con_org as  conOrg,
+	    tab_chinese_name AS tagName,
+		t.row_id AS tagId,
+	    c.org_type as  orgType,
+	    c.con_url as conUrl,
+	    status,
+	    release_time as releaseTime,
+	    thumb_media_id as  thumbMediaId,
+	    expire_time as  expireTime,
+	    h.chinese_name as  publishUser,
+	     message_type as messageType,
+	     keyword,
+	    b.chinese_name AS brandName
+   </sql>
+
+    <sql id="sqlArticleByStatus">
+        SELECT
+        <include refid="ObjectSql"/>
+        FROM con_info c
+        LEFT JOIN con_mate m ON c.mate_id = m.row_id  AND  m.active_flag=#{activeFlag}
+        LEFT JOIN tag_info t ON c.con_tag=t.row_id AND  t.active_flag=#{activeFlag}
+        LEFT JOIN  org_hotel h ON c.con_org=h.row_id
+        LeFT JOIN   org_brand b ON h.brand_id=b.row_id
+        WHERE  status !=#{status} AND  c.active_flag=#{activeFlag}
+    </sql>
+
+    <sql id="sqlArticleByList">
+        SELECT
+        <include refid="ObjectSql"/>
+        FROM con_info c
+        LEFT JOIN con_mate m ON c.mate_id = m.row_id AND m.active_flag=#{activeFlag}
+        LEFT JOIN tag_info t ON c.con_tag=t.row_id AND t.active_flag=#{activeFlag}
+        LEFT JOIN  org_hotel h ON c.con_org=h.row_id
+        LeFT JOIN   org_brand b ON h.brand_id=b.row_id
+        WHERE c.active_flag=#{activeFlag}
+        <if test=" conTitle != null ">AND c.con_title LIKE CONCAT('%',#{conTitle},'%' )</if>
+        <if test=" conDesc != null ">AND c.con_desc LIKE CONCAT('%',#{conDesc},'%' )</if>
+        <if test=" conType != null and  conType!=''">AND c.con_type IN (${conType})</if>
+        <if test=" conDetail != null ">AND c.con_detail = #{conDetail}</if>
+        <if test=" conShare != null and conShare != 0 ">AND c.con_share = #{conShare}</if>
+        <if test=" createDate != null ">AND c.create_date = #{createDate}</if>
+        <if test=" createUser != null ">AND c.create_user = #{createUser}</if>
+        <if test=" lastUpdateDate != null ">AND c.last_update_date = #{lastUpdateDate}</if>
+        <if test=" lastUpdateUser != null ">AND c.last_update_user = #{lastUpdateUser}</if>
+        <if test="conUrl!=null and conUrl!=''">AND con_url=#{conUrl}</if>
+        <if test="status!=null and status!=''">AND status IN (${status}) </if>
+        <if test="conTag!=null">AND t.row_id =#{conTag} </if>
+        <if test="mateId!=null and mateId!=''">AND c.mate_id  IN (${mateId}) </if>
+        <if test="conOrg!=null and conOrg!=''">AND c.con_org  IN (${conOrg}) </if>
+        <if test=" conMessage != null and conMessage != 0 ">
+            AND c.con_message = #{conMessage}
+            <if test="expire!=null">
+                <if test="expire==20">
+                    AND expire_time >= NOW()
+                </if>
+                <if test="expire==10">
+                    AND expire_time &lt; NOW()
+                </if>
+            </if>
+        </if>
+
+    </sql>
+
+
+
+    <select id="queryArticleByRowId" resultType="com.huazhu.application.cms.article.dto.ArticleDTO">
+        SELECT
+        <include refid="ObjectSql"/>
+        FROM con_info c
+        LEFT JOIN con_mate m ON c.mate_id = m.row_id
+        LEFT JOIN tag_info t ON c.con_tag=t.row_id
+        LEFT JOIN  org_hotel h ON c.con_org=h.row_id
+        LEFT JOIN   org_brand b ON h.brand_id=b.row_id
+        WHERE c.row_id = #{rowId}
+    </select>
+
+    <!-- 条件模糊查询 -->
+    <select id="queryArticleByConditions" resultType="com.huazhu.application.cms.article.dto.ArticleDTO"
+            parameterType="com.huazhu.application.cms.article.entity.Article">
+        <include refid="sqlArticleByList"/>
+        <if test="hotelId!=null">AND con_org =#{hotelId} and org_type=20 </if>
+    </select>
+
+    
+    <select id="queryArticleByShare"  resultType="com.huazhu.application.cms.article.dto.ArticleDTO"
+            parameterType="com.huazhu.application.cms.article.entity.Article">
+        <include refid="sqlArticleByList"/>
+        <if test="hotelId!=null">AND con_org !=#{hotelId} AND org_type=20</if>
+        AND con_share =20 AND expire_time>=NOW()
+    </select>
+
+
+
+    <select id="queryArticleByStatus" resultType="com.huazhu.application.cms.article.dto.ArticleDTO">
+         <include refid="sqlArticleByStatus"/>
+        <if test="hotelId!=null">
+            AND c.con_org=#{hotelId} AND org_type=20
+        </if>
+
+    </select>
+
+    <select id="queryArticleByStatusAndShare" resultType="com.huazhu.application.cms.article.dto.ArticleDTO">
+        <include refid="sqlArticleByStatus"/>
+        AND c.con_org !=#{hotelId} AND con_share =20 AND expire_time>=NOW() AND org_type=20
+    </select>
+
+
+
+
+
+    <!-- 新增 -->
+    <insert id="insertArticle" parameterType="com.huazhu.application.cms.article.entity.Article"
+            useGeneratedKeys="true" keyProperty="rowId" keyColumn="row_id">
+        INSERT INTO con_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test=" mateId != null  and mateId!=0">mate_id ,</if>
+            <if test=" conTitle != null and conTitle!='' ">con_title ,</if>
+            <if test=" conDesc != null  and conDesc!=''">con_desc ,</if>
+            <if test=" conType != null and conType != '' ">con_type ,</if>
+            <if test=" conDetail != null and conDetail!=''">con_detail ,</if>
+            <if test=" conShare != null and conShare != 0 ">con_share ,</if>
+            <if test=" conMessage != null and conMessage != 0 ">con_message ,</if>
+            <if test=" createDate != null ">create_date ,</if>
+            <if test=" createUser != null ">create_user ,</if>
+            <if test=" lastUpdateDate != null ">last_update_date ,</if>
+            <if test=" lastUpdateUser != null ">last_update_user ,</if>
+            <if test=" activeFlag != null and activeFlag!=0">active_flag ,</if>
+            <if test=" conTag != null ">con_tag ,</if>
+            <if test=" conOrg != null ">con_org ,</if>
+            <if test=" orgType != null ">org_type ,</if>
+            <if test="conUrl!=null and conUrl!=''">con_url,</if>
+            <if test="status!=null and status!=''">status,</if>
+            <if test="expireTime!=null"> expire_time, </if>
+            <if test="messageType!=null and messageType!=0"> message_type, </if>
+            <if test="keyword!=null and keyword!=''">keyword,</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test=" mateId != null and mateId!=0">#{mateId} ,</if>
+            <if test=" conTitle != null and conTitle!=''">#{conTitle} ,</if>
+            <if test=" conDesc != null and conDesc!=''">#{conDesc} ,</if>
+            <if test=" conType != null and conType != '' ">#{conType} ,</if>
+            <if test=" conDetail != null and conDetail!=''">#{conDetail} ,</if>
+            <if test=" conShare != null and conShare != 0 ">#{conShare} ,</if>
+            <if test=" conMessage != null and conMessage != 0 ">#{conMessage} ,</if>
+            <if test=" createDate != null ">#{createDate} ,</if>
+            <if test=" createUser != null ">#{createUser} ,</if>
+            <if test=" lastUpdateDate != null ">#{lastUpdateDate} ,</if>
+            <if test=" lastUpdateUser != null ">#{lastUpdateUser} ,</if>
+            <if test=" activeFlag != null and activeFlag!=0">#{activeFlag} ,</if>
+            <if test=" conTag != null ">#{conTag} ,</if>
+            <if test=" conOrg != null ">#{conOrg} ,</if>
+            <if test=" orgType != null ">#{orgType} ,</if>
+            <if test="conUrl!=null and conUrl!=''">#{conUrl},</if>
+            <if test="status!=null and status!=''">#{status},</if>
+            <if test="expireTime!=null">#{expireTime} ,</if>
+            <if test="messageType!=null and messageType!=0"> #{messageType}, </if>
+            <if test="keyword!=null and keyword!=''">#{keyword},</if>
+        </trim>
+    </insert>
+
+    <!-- 编辑 -->
+    <update id="updateArticleByRowId" parameterType="com.huazhu.application.cms.article.entity.Article">
+        UPDATE con_info
+        <set>
+            last_update_date = #{lastUpdateDate}
+            <if test=" mateId != null  and mateId!=0">,mate_id = #{mateId}</if>
+            <if test=" conTitle != null and conTitle!=''">,con_title = #{conTitle}</if>
+            <if test=" conType != null and conType!=''">,con_type = #{conType}</if>
+            <if test=" conDetail != null and conDetail!=''">,con_detail = #{conDetail}</if>
+            <if test=" conShare != null and conShare !=0">,con_share = #{conShare}</if>
+            <if test=" conMessage != null  and conMessage!=0">,con_message = #{conMessage} </if>
+            <if test=" lastUpdateUser != null ">, last_update_user = #{lastUpdateUser}</if>
+            <if test=" conTag != null and conTag!=0">,con_tag=#{conTag}</if>
+            <if test=" conOrg != null ">,con_org= #{conOrg}</if>
+            <if test=" orgType != null ">,org_type= #{orgType}</if>
+            <if test="conUrl!=null and conUrl!=''">,con_url=#{conUrl}</if>
+            <if test="activeFlag!=null and activeFlag!=0">,active_flag=#{activeFlag}</if>
+            <if test="status!=null and status!=''">, status=#{status}</if>
+            <if test="releaseTime!=null">, release_time=#{releaseTime}</if>
+            <if test="expireTime!=null">, expire_time =#{expireTime} </if>
+            <if test="messageType!=null and messageType!=0">, message_type=#{messageType}</if>
+            <if test="keyword!=null and keyword!=''">,keyword=#{keyword}</if>
+        </set>
+        WHERE
+        row_id IN (${rowId})
+
+    </update>
+
+
+    <update id="deleteArticleByRowId">
+		UPDATE con_info
+		SET active_flag = #{activeFlag},
+		    last_update_date = NOW()
+		WHERE
+			row_id = #{rowId}
+   </update>
+
+
+    <select id="getArticleInfoByListId" resultType="com.huazhu.application.cms.article.dto.ArticleDTO">
+		SELECT DISTINCT
+        <include refid="ObjectSql"/>
+		FROM
+			con_list_detail d
+        LEFT JOIN con_info c ON d.con_id = c.row_id  AND c.active_flag = #{activeFlag}
+        LEFT JOIN con_mate m ON c.mate_id = m.row_id 	AND m.active_flag = #{activeFlag}
+        LEFT JOIN tag_info t ON c.con_tag=t.row_id 	AND t.active_flag = #{activeFlag}
+        LEFT JOIN  org_hotel h ON c.con_org=h.row_id
+        LEFT JOIN   org_brand b ON h.brand_id=b.row_id
+		WHERE d.active_flag = #{activeFlag}
+            <if test="articleListId!=null">
+              AND   d.con_list_id = #{articleListId}
+            </if>
+            <if test="articleId!=null">
+              AND  d.con_id = #{articleId}
+            </if>
+
+    </select>
+
+
+
+
+</mapper>

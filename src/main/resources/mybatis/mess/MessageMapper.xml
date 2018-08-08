@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huazhu.application.cms.mess.dao.MessageMapper">
+    <sql id="ObjectSql">
+	   pai.row_id as "rowId",
+	   pai.push_title as "pushTitle",
+       pai.push_type as "pushType",
+       pai.push_time as "pushTime",
+       pai.push_con as "pushCon",
+       pai.push_status as "pushStatus",
+       pai.push_tag as "pushTag",
+	   pai.create_date as "createDate",
+	   pai.create_user as "createUser",
+	   pai.last_update_date as "lastUpdateDate",
+	   pai.last_update_user as "lastUpdateUser",
+	   pai.active_flag as "activeFlag",
+	   pai.con_org as conOrg,
+	   pai.org_type as  orgType,
+	   pai.msg_id as  msgI,
+	   pai.msg_data_id as  msgDataId,
+	   ti.tab_chinese_name as "pushTagName",
+        f.row_id AS  fansFilteId,
+        f.name AS fansFilteName,
+        pai.create_date as "createDate",
+	   pai.create_user as "createUser",
+	   pai.last_update_date as "lastUpdateDate",
+	   pai.last_update_user as "lastUpdateUser"
+
+   </sql>
+   
+   
+
+   <select id="queryMessageByRowId" resultType="com.huazhu.application.cms.mess.dto.MessageDTO">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM push_apply_info pai
+       LEFT JOIN tag_info ti ON pai.push_tag =ti.row_id AND  ti.active_flag=10
+       LEFT JOIN fans_filter f ON pai.filter_id =f.row_id  AND  f.active_flag=10
+       WHERE  pai.row_id = #{rowId}
+   </select>
+   
+   <!-- 条件模糊查询 -->
+   <select id="queryMessageByConditions" resultType="com.huazhu.application.cms.mess.dto.MessageDTO" parameterType="com.huazhu.application.cms.mess.entity.Message">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM push_apply_info pai
+       LEFT JOIN tag_info ti ON pai.push_tag =ti.row_id AND  ti.active_flag=10
+       LEFT JOIN fans_filter f ON pai.filter_id =f.row_id AND  f.active_flag=10
+       WHERE 1=1
+       <if test=" pushTitle != null and pushTitle!=''"> AND pai.push_title LIKE CONCAT('%',#{pushTitle},'%' ) </if>
+       <if test=" pushType != null "> AND pai.push_type = #{pushType}</if>
+       <if test=" pushTime != null "> AND pai.push_time = #{pushTime}</if>
+       <if test=" pushCon != null and pushCon!=''"> AND pai.push_con = #{pushCon}</if>
+       <if test=" pushStatus != null "> AND pai.push_status = #{pushStatus}</if>
+       <if test=" pushTag != null "> AND pai.push_tag = #{pushTag}</if>
+       <if test=" createDate != null "> AND pai.create_date = #{createDate}</if>
+       <if test=" createUser != null "> AND pai.create_user = #{createUser}</if>
+       <if test=" lastUpdateDate != null "> AND pai.last_update_date = #{lastUpdateDate}</if>
+       <if test=" lastUpdateUser != null "> AND pai.last_update_user = #{lastUpdateUser}</if>
+       <if test=" activeFlag != null  and activeFlag!=0"> AND pai.active_flag = #{activeFlag}</if>
+       <if test=" conOrg != null  "> AND pai.con_org = #{conOrg} </if>
+       <if test=" orgType != null  "> AND pai.org_type = #{orgType} </if>
+   </select>
+   
+   <!-- 新增 -->
+   <insert id="insertMessage" parameterType="com.huazhu.application.cms.mess.entity.Message" useGeneratedKeys="true">
+        INSERT INTO push_apply_info
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+
+            <if test=" pushTitle != null "> push_title , </if>
+	        <if test=" pushType != null "> push_type , </if>
+	        <if test=" pushTime != null "> push_time , </if>
+	        <if test=" pushCon != null "> push_con , </if>
+	        <if test=" pushStatus != null "> push_status , </if>
+	        <if test=" pushTag != null "> push_tag , </if>
+			<if test=" createDate != null "> create_date , </if>
+			<if test=" createUser != null "> create_user , </if>
+			<if test=" lastUpdateDate != null "> last_update_date , </if>
+			<if test=" lastUpdateUser != null "> last_update_user , </if>
+			<if test=" activeFlag != null "> active_flag , </if>
+            <if test=" conOrg != null "> con_org , </if>
+            <if test=" orgType != null "> org_type , </if>
+            <if test=" msgId != null "> msg_id , </if>
+            <if test=" msgDataId != null "> msg_data_id , </if>
+            <if test=" filterId != null "> filter_id , </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+
+			<if test=" pushTitle != null "> #{pushTitle} , </if>
+	        <if test=" pushType != null "> #{pushType} , </if>
+	        <if test=" pushTime != null "> #{pushTime} , </if>
+	        <if test=" pushCon != null "> #{pushCon} , </if>
+	        <if test=" pushStatus != null "> #{pushStatus} , </if>
+	        <if test=" pushTag != null "> #{pushTag} , </if>
+			<if test=" createDate != null "> #{createDate} , </if>
+			<if test=" createUser != null "> #{createUser} , </if>
+			<if test=" lastUpdateDate != null "> #{lastUpdateDate} , </if>
+			<if test=" lastUpdateUser != null "> #{lastUpdateUser} , </if>
+			<if test=" activeFlag != null "> #{activeFlag} , </if>
+            <if test=" conOrg != null "> #{conOrg} , </if>
+            <if test=" orgType != null "> #{orgType} , </if>
+            <if test=" msgId != null "> #{msgId} , </if>
+            <if test=" msgDataId != null "> #{msgDataId} , </if>
+            <if test=" filterId != null "> #{filterId} , </if>
+		</trim>
+   </insert>
+   
+   <!-- 编辑 -->
+   <update id="updateMessageByRowId"  parameterType="com.huazhu.application.cms.mess.entity.Message">
+        UPDATE push_apply_info
+		<set>
+            last_update_date = #{lastUpdateDate}
+            <if test=" pushTitle != null "> ,push_title = #{pushTitle} </if>
+	        <if test=" pushType != null "> ,push_type = #{pushType}</if>
+	        <if test=" pushTime != null ">, push_time = #{pushTime}  </if>
+	        <if test=" pushCon != null "> ,push_con = #{pushCon}  </if>
+	        <if test=" pushStatus != null ">, push_status = #{pushStatus} </if>
+	        <if test=" pushTag != null "> ,push_tag = #{pushTag}  </if>
+			<if test=" lastUpdateUser != null "> ,last_update_user = #{lastUpdateUser}  </if>
+			<if test=" activeFlag != null ">, active_flag = #{activeFlag}  </if>
+            <if test=" conOrg != null "> ,con_org=#{conOrg}  </if>
+            <if test=" orgType != null ">,org_type= #{orgType}  </if>
+            <if test=" msgId != null and msgId!=''"> ,msg_id=#{msgId} </if>
+            <if test=" msgDataId != null and msgDataId!=''">,msg_data_id= #{msgDataId}  </if>
+            <if test=" filterId != null ">, filter_id=#{filterId}  </if>
+		</set>
+		WHERE
+			row_id = #{rowId}
+   </update>
+
+    <select id="getMessageCountByDate" resultType="java.lang.Integer">
+        SELECT
+            COUNT(row_id)
+        FROM
+            push_apply_info
+        WHERE
+            push_status IN (${status}) AND  active_flag=10
+            AND date_format(push_time, '%Y-%m') =#{date} and con_org=#{hotelId}
+            AND orgType=20
+    </select>
+
+    <select id="getMessageByExpire" resultType="com.huazhu.application.cms.mess.dto.MessageDTO">
+         SELECT
+           row_id as rowId,
+           push_title as  pushTitle
+        FROM
+            push_apply_info
+        WHERE
+        active_flag=10 AND push_time &lt; NOW()
+    </select>
+</mapper>

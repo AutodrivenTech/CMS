@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huazhu.application.cms.system.dao.SysMenuInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.huazhu.application.cms.system.entity.SysMenuInfo" >
+    <id column="row_id" property="rowId" jdbcType="BIGINT" />
+    <result column="chinese_name" property="chineseName" jdbcType="VARCHAR" />
+    <result column="english_name" property="englishName" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="level_num" property="levelNum" jdbcType="TINYINT" />
+    <result column="menu_url" property="menuUrl" jdbcType="VARCHAR" />
+    <result column="parent_menu" property="parentMenu" jdbcType="BIGINT" />
+    <result column="order_num" property="orderNum" jdbcType="TINYINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="BIGINT" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="BIGINT" />
+    <result column="active_flag" property="activeFlag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    row_id, chinese_name, english_name, icon, level_num, menu_url, parent_menu, order_num, 
+    create_date, create_user, last_update_date, last_update_user, active_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huazhu.application.cms.system.entity.SysMenuInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from sys_menu_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_menu_info
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_menu_info
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.huazhu.application.cms.system.entity.SysMenuInfoExample" >
+    delete from sys_menu_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.huazhu.application.cms.system.entity.SysMenuInfo" >
+    insert into sys_menu_info (row_id, chinese_name, english_name, 
+      icon, level_num, menu_url, 
+      parent_menu, order_num, create_date, 
+      create_user, last_update_date, last_update_user, 
+      active_flag)
+    values (#{rowId,jdbcType=BIGINT}, #{chineseName,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{levelNum,jdbcType=TINYINT}, #{menuUrl,jdbcType=VARCHAR}, 
+      #{parentMenu,jdbcType=BIGINT}, #{orderNum,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=BIGINT}, #{lastUpdateDate,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=BIGINT}, 
+      #{activeFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huazhu.application.cms.system.entity.SysMenuInfo" >
+    insert into sys_menu_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rowId != null" >
+        row_id,
+      </if>
+      <if test="chineseName != null" >
+        chinese_name,
+      </if>
+      <if test="englishName != null" >
+        english_name,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="levelNum != null" >
+        level_num,
+      </if>
+      <if test="menuUrl != null" >
+        menu_url,
+      </if>
+      <if test="parentMenu != null" >
+        parent_menu,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="activeFlag != null" >
+        active_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rowId != null" >
+        #{rowId,jdbcType=BIGINT},
+      </if>
+      <if test="chineseName != null" >
+        #{chineseName,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null" >
+        #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="levelNum != null" >
+        #{levelNum,jdbcType=TINYINT},
+      </if>
+      <if test="menuUrl != null" >
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMenu != null" >
+        #{parentMenu,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=BIGINT},
+      </if>
+      <if test="activeFlag != null" >
+        #{activeFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.huazhu.application.cms.system.entity.SysMenuInfoExample" resultType="java.lang.Integer" >
+    select count(*) from sys_menu_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_menu_info
+    <set >
+      <if test="record.rowId != null" >
+        row_id = #{record.rowId,jdbcType=BIGINT},
+      </if>
+      <if test="record.chineseName != null" >
+        chinese_name = #{record.chineseName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.englishName != null" >
+        english_name = #{record.englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.icon != null" >
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.levelNum != null" >
+        level_num = #{record.levelNum,jdbcType=TINYINT},
+      </if>
+      <if test="record.menuUrl != null" >
+        menu_url = #{record.menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentMenu != null" >
+        parent_menu = #{record.parentMenu,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderNum != null" >
+        order_num = #{record.orderNum,jdbcType=TINYINT},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null" >
+        create_user = #{record.createUser,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastUpdateDate != null" >
+        last_update_date = #{record.lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastUpdateUser != null" >
+        last_update_user = #{record.lastUpdateUser,jdbcType=BIGINT},
+      </if>
+      <if test="record.activeFlag != null" >
+        active_flag = #{record.activeFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_menu_info
+    set row_id = #{record.rowId,jdbcType=BIGINT},
+      chinese_name = #{record.chineseName,jdbcType=VARCHAR},
+      english_name = #{record.englishName,jdbcType=VARCHAR},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      level_num = #{record.levelNum,jdbcType=TINYINT},
+      menu_url = #{record.menuUrl,jdbcType=VARCHAR},
+      parent_menu = #{record.parentMenu,jdbcType=BIGINT},
+      order_num = #{record.orderNum,jdbcType=TINYINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=BIGINT},
+      last_update_date = #{record.lastUpdateDate,jdbcType=TIMESTAMP},
+      last_update_user = #{record.lastUpdateUser,jdbcType=BIGINT},
+      active_flag = #{record.activeFlag,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huazhu.application.cms.system.entity.SysMenuInfo" >
+    update sys_menu_info
+    <set >
+      <if test="chineseName != null" >
+        chinese_name = #{chineseName,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null" >
+        english_name = #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="levelNum != null" >
+        level_num = #{levelNum,jdbcType=TINYINT},
+      </if>
+      <if test="menuUrl != null" >
+        menu_url = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMenu != null" >
+        parent_menu = #{parentMenu,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null" >
+        order_num = #{orderNum,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=BIGINT},
+      </if>
+      <if test="activeFlag != null" >
+        active_flag = #{activeFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huazhu.application.cms.system.entity.SysMenuInfo" >
+    update sys_menu_info
+    set chinese_name = #{chineseName,jdbcType=VARCHAR},
+      english_name = #{englishName,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      level_num = #{levelNum,jdbcType=TINYINT},
+      menu_url = #{menuUrl,jdbcType=VARCHAR},
+      parent_menu = #{parentMenu,jdbcType=BIGINT},
+      order_num = #{orderNum,jdbcType=TINYINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=BIGINT},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=BIGINT},
+      active_flag = #{activeFlag,jdbcType=TINYINT}
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+</mapper>

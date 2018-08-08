@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huazhu.application.cms.material.dao.MaterialMapper">
+    <sql id="ObjectSql">
+	   c.row_id as "rowId",
+	   mate_name as "mateName",
+	   mate_desc as "mateDesc",
+	   img_url as "imgUrl",
+	   mate_type as "mateType",
+	   c.create_date as "createDate",
+	   c.create_user as "createUser",
+	   c.last_update_date as "lastUpdateDate",
+	   c.last_update_user as "lastUpdateUser",
+	   c.active_flag as "activeFlag",
+	   thumb_media_id as thumbMediaId,
+	   is_upload as  isUpload,
+	   tag_id  as  tagId,
+	   tab_chinese_name as  tagName
+   </sql>
+
+   
+   <select id="queryMaterialByRowId" resultType="com.huazhu.application.cms.material.entity.Material">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM con_mate c
+       LEFT JOIN tag_info t ON c.tag_id=t.row_id AND t.active_flag = 10
+       WHERE c.row_id = #{rowId}
+   </select>
+   
+   <!-- 条件模糊查询 -->
+   <select id="queryMaterialByConditions" resultType="com.huazhu.application.cms.material.entity.Material" parameterType="com.huazhu.application.cms.material.entity.Material">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM con_mate c
+       LEFT JOIN tag_info t ON c.tag_id=t.row_id  AND t.active_flag = #{activeFlag}
+       WHERE c.active_flag = #{activeFlag}
+       <if test=" rowId != null "> AND c.row_id = #{rowId}</if>
+       <if test=" mateName != null and mateName!=''"> AND mate_name LIKE CONCAT('%',#{mateName},'%' ) </if>
+       <if test=" mateDesc != null and mateDesc!='' "> AND mate_desc LIKE CONCAT('%',#{mateDesc},'%' ) </if>
+       <if test=" imgUrl != null and imgUrl!=''"> AND img_url = #{imgUrl} </if>
+       <if test=" mateType != null and mateType!=''"> AND mate_type IN  (${mateType})  </if>
+       <if test=" createDate != null "> AND c.create_date = #{createDate} </if>
+       <if test=" createUser != null "> AND c.create_user = #{createUser} </if>
+       <if test=" lastUpdateDate != null "> AND c.last_update_date = #{lastUpdateDate} </if>
+       <if test=" lastUpdateUser != null "> AND c.last_update_user = #{lastUpdateUser} </if>
+       <if test=" tagName != null and tagName != ''"> AND tab_chinese_name = #{tagName} </if>
+       <if test=" tagIds != null and tagIds!=''"> AND t.row_id  IN (${tagId}) </if>
+   </select>
+
+
+    <!-- 新增 -->
+   <insert id="insertMaterial" parameterType="com.huazhu.application.cms.material.entity.Material" useGeneratedKeys="true">
+        INSERT INTO con_mate
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        
+			<if test=" rowId != null " > row_id , </if>
+			<if test=" mateName != null  and mateName!=''"> mate_name ,</if>
+            <if test=" mateDesc != null  and mateDesc!=''"> mate_desc ,</if>
+            <if test=" imgUrl != null and imgUrl!=''"> img_url ,</if>
+            <if test=" mateType != null and mateType!=''"> mate_type ,</if>
+			<if test=" createDate != null "> create_date , </if>
+			<if test=" createUser != null "> create_user , </if>
+			<if test=" lastUpdateDate != null "> last_update_date , </if>
+			<if test=" lastUpdateUser != null "> last_update_user , </if>
+			<if test=" activeFlag != null "> active_flag , </if>
+            <if test="thumbMediaId!=null and thumbMediaId!=''">thumb_media_id,</if>
+            <if test="isUpload!=null">is_upload,</if>
+            <if test="tagId!=null and tagId !=0">tag_id,</if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+		
+			<if test=" rowId != null "> #{rowId} , </if>
+			<if test=" mateName != null and  mateName!=''"> #{mateName} , </if>
+            <if test=" mateDesc != null and mateDesc!=''"> #{mateDesc} , </if>
+            <if test=" imgUrl != null and imgUrl!=''"> #{imgUrl} , </if>
+            <if test=" mateType != null and mateType!='' "> #{mateType} , </if>
+			<if test=" createDate != null "> #{createDate} , </if>
+			<if test=" createUser != null "> #{createUser} , </if>
+			<if test=" lastUpdateDate != null "> #{lastUpdateDate} , </if>
+			<if test=" lastUpdateUser != null "> #{lastUpdateUser} , </if>
+			<if test=" activeFlag != null and activeFlag!=0"> #{activeFlag} , </if>
+            <if test="thumbMediaId!=null and thumbMediaId!=''">#{thumbMediaId},</if>
+            <if test="isUpload!=null">#{isUpload},</if>
+            <if test="tagId!=null  and tagId !=0">#{tagId},</if>
+		</trim>
+   </insert>
+   
+   <!-- 编辑 -->
+   <update id="updateMaterialByRowId" parameterType="com.huazhu.application.cms.material.entity.Material">
+        UPDATE con_mate
+		<set>
+            last_update_date = #{lastUpdateDate}
+			<if test=" mateName != null  and mateName!=''">, mate_name = #{mateName}  </if>
+            <if test=" mateDesc != null and mateDesc!=''"> ,mate_desc = #{mateDesc}  </if>
+            <if test=" imgUrl != null and imgUrl!=''"> ,img_url = #{imgUrl}  </if>
+            <if test=" mateType != null and mateType!=''"> ,mate_type = #{mateType}  </if>
+			<if test=" lastUpdateUser != null "> ,last_update_user = #{lastUpdateUser}  </if>
+			<if test=" activeFlag != null and activeFlag!=0"> ,active_flag = #{activeFlag} </if>
+            <if test="thumbMediaId!=null and thumbMediaId!=''">,thumb_media_id=#{thumbMediaId}</if>
+            <if test="isUpload!=null">,is_upload=#{isUpload}</if>
+            <if test="tagId!=null and tagId !=0">,tag_id=#{tagId}</if>
+		</set>
+		WHERE
+			row_id  IN (${rowId})
+   
+   </update>
+
+
+</mapper>

@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huazhu.application.cms.wechat.menu.dao.WechatMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.huazhu.application.cms.wechat.menu.entity.WechatMenu" >
+    <id column="row_id" property="rowId" jdbcType="BIGINT" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+    <result column="menu_type" property="menuType" jdbcType="VARCHAR" />
+    <result column="menu_url" property="menuUrl" jdbcType="VARCHAR" />
+    <result column="parent_menu" property="parentMenu" jdbcType="BIGINT" />
+    <result column="order_num" property="orderNum" jdbcType="TINYINT" />
+    <result column="vakue5" property="vakue5" jdbcType="VARCHAR" />
+    <result column="vakue4" property="vakue4" jdbcType="VARCHAR" />
+    <result column="vakue3" property="vakue3" jdbcType="VARCHAR" />
+    <result column="vakue2" property="vakue2" jdbcType="VARCHAR" />
+    <result column="vakue1" property="vakue1" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="BIGINT" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="BIGINT" />
+    <result column="active_flag" property="activeFlag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    row_id, menu_name, menu_type, menu_url, parent_menu, order_num, vakue5, vakue4, vakue3, 
+    vakue2, vakue1, create_date, create_user, last_update_date, last_update_user, active_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huazhu.application.cms.wechat.menu.entity.WechatMenuExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from wechat_menu
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wechat_menu
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wechat_menu
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.huazhu.application.cms.wechat.menu.entity.WechatMenuExample" >
+    delete from wechat_menu
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.huazhu.application.cms.wechat.menu.entity.WechatMenu" >
+    insert into wechat_menu (row_id, menu_name, menu_type, 
+      menu_url, parent_menu, order_num, 
+      vakue5, vakue4, vakue3, 
+      vakue2, vakue1, create_date, 
+      create_user, last_update_date, last_update_user, 
+      active_flag)
+    values (#{rowId,jdbcType=BIGINT}, #{menuName,jdbcType=VARCHAR}, #{menuType,jdbcType=VARCHAR}, 
+      #{menuUrl,jdbcType=VARCHAR}, #{parentMenu,jdbcType=BIGINT}, #{orderNum,jdbcType=TINYINT}, 
+      #{vakue5,jdbcType=VARCHAR}, #{vakue4,jdbcType=VARCHAR}, #{vakue3,jdbcType=VARCHAR}, 
+      #{vakue2,jdbcType=VARCHAR}, #{vakue1,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=BIGINT}, #{lastUpdateDate,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=BIGINT}, 
+      #{activeFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huazhu.application.cms.wechat.menu.entity.WechatMenu" >
+    insert into wechat_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rowId != null" >
+        row_id,
+      </if>
+      <if test="menuName != null" >
+        menu_name,
+      </if>
+      <if test="menuType != null" >
+        menu_type,
+      </if>
+      <if test="menuUrl != null" >
+        menu_url,
+      </if>
+      <if test="parentMenu != null" >
+        parent_menu,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="vakue5 != null" >
+        vakue5,
+      </if>
+      <if test="vakue4 != null" >
+        vakue4,
+      </if>
+      <if test="vakue3 != null" >
+        vakue3,
+      </if>
+      <if test="vakue2 != null" >
+        vakue2,
+      </if>
+      <if test="vakue1 != null" >
+        vakue1,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="activeFlag != null" >
+        active_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rowId != null" >
+        #{rowId,jdbcType=BIGINT},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuType != null" >
+        #{menuType,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMenu != null" >
+        #{parentMenu,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=TINYINT},
+      </if>
+      <if test="vakue5 != null" >
+        #{vakue5,jdbcType=VARCHAR},
+      </if>
+      <if test="vakue4 != null" >
+        #{vakue4,jdbcType=VARCHAR},
+      </if>
+      <if test="vakue3 != null" >
+        #{vakue3,jdbcType=VARCHAR},
+      </if>
+      <if test="vakue2 != null" >
+        #{vakue2,jdbcType=VARCHAR},
+      </if>
+      <if test="vakue1 != null" >
+        #{vakue1,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=BIGINT},
+      </if>
+      <if test="activeFlag != null" >
+        #{activeFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.huazhu.application.cms.wechat.menu.entity.WechatMenuExample" resultType="java.lang.Integer" >
+    select count(*) from wechat_menu
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update wechat_menu
+    <set >
+      <if test="record.rowId != null" >
+        row_id = #{record.rowId,jdbcType=BIGINT},
+      </if>
+      <if test="record.menuName != null" >
+        menu_name = #{record.menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuType != null" >
+        menu_type = #{record.menuType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuUrl != null" >
+        menu_url = #{record.menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentMenu != null" >
+        parent_menu = #{record.parentMenu,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderNum != null" >
+        order_num = #{record.orderNum,jdbcType=TINYINT},
+      </if>
+      <if test="record.vakue5 != null" >
+        vakue5 = #{record.vakue5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vakue4 != null" >
+        vakue4 = #{record.vakue4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vakue3 != null" >
+        vakue3 = #{record.vakue3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vakue2 != null" >
+        vakue2 = #{record.vakue2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vakue1 != null" >
+        vakue1 = #{record.vakue1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null" >
+        create_user = #{record.createUser,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastUpdateDate != null" >
+        last_update_date = #{record.lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastUpdateUser != null" >
+        last_update_user = #{record.lastUpdateUser,jdbcType=BIGINT},
+      </if>
+      <if test="record.activeFlag != null" >
+        active_flag = #{record.activeFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update wechat_menu
+    set row_id = #{record.rowId,jdbcType=BIGINT},
+      menu_name = #{record.menuName,jdbcType=VARCHAR},
+      menu_type = #{record.menuType,jdbcType=VARCHAR},
+      menu_url = #{record.menuUrl,jdbcType=VARCHAR},
+      parent_menu = #{record.parentMenu,jdbcType=BIGINT},
+      order_num = #{record.orderNum,jdbcType=TINYINT},
+      vakue5 = #{record.vakue5,jdbcType=VARCHAR},
+      vakue4 = #{record.vakue4,jdbcType=VARCHAR},
+      vakue3 = #{record.vakue3,jdbcType=VARCHAR},
+      vakue2 = #{record.vakue2,jdbcType=VARCHAR},
+      vakue1 = #{record.vakue1,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=BIGINT},
+      last_update_date = #{record.lastUpdateDate,jdbcType=TIMESTAMP},
+      last_update_user = #{record.lastUpdateUser,jdbcType=BIGINT},
+      active_flag = #{record.activeFlag,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huazhu.application.cms.wechat.menu.entity.WechatMenu" >
+    update wechat_menu
+    <set >
+      <if test="menuName != null" >
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuType != null" >
+        menu_type = #{menuType,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        menu_url = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMenu != null" >
+        parent_menu = #{parentMenu,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null" >
+        order_num = #{orderNum,jdbcType=TINYINT},
+      </if>
+      <if test="vakue5 != null" >
+        vakue5 = #{vakue5,jdbcType=VARCHAR},
+      </if>
+      <if test="vakue4 != null" >
+        vakue4 = #{vakue4,jdbcType=VARCHAR},
+      </if>
+      <if test="vakue3 != null" >
+        vakue3 = #{vakue3,jdbcType=VARCHAR},
+      </if>
+      <if test="vakue2 != null" >
+        vakue2 = #{vakue2,jdbcType=VARCHAR},
+      </if>
+      <if test="vakue1 != null" >
+        vakue1 = #{vakue1,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=BIGINT},
+      </if>
+      <if test="activeFlag != null" >
+        active_flag = #{activeFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huazhu.application.cms.wechat.menu.entity.WechatMenu" >
+    update wechat_menu
+    set menu_name = #{menuName,jdbcType=VARCHAR},
+      menu_type = #{menuType,jdbcType=VARCHAR},
+      menu_url = #{menuUrl,jdbcType=VARCHAR},
+      parent_menu = #{parentMenu,jdbcType=BIGINT},
+      order_num = #{orderNum,jdbcType=TINYINT},
+      vakue5 = #{vakue5,jdbcType=VARCHAR},
+      vakue4 = #{vakue4,jdbcType=VARCHAR},
+      vakue3 = #{vakue3,jdbcType=VARCHAR},
+      vakue2 = #{vakue2,jdbcType=VARCHAR},
+      vakue1 = #{vakue1,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=BIGINT},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=BIGINT},
+      active_flag = #{activeFlag,jdbcType=TINYINT}
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+</mapper>

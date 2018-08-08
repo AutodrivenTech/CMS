@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huazhu.application.cms.organization.dao.GroupMapper">
+    <sql id="ObjectSql">
+	   row_id as "rowId",
+	   chinese_name as "groupChineseName",
+	   english_name as "groupEnglishName",
+	   create_date as "createDate",
+	   create_user as "createUser",
+	   last_update_date as "lastUpdateDate",
+	   last_update_user as "lastUpdateUser",
+	   active_flag as "activeFlag"
+   </sql>
+   <!-- 条件查询 -->
+   <select id="queryGroup" resultType="com.huazhu.application.cms.organization.entity.Group" parameterType="com.huazhu.application.cms.organization.entity.Group">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM org_group
+       WHERE 1=1
+       <if test=" rowId != null "> AND row_id = #{rowId}</if>
+       <if test=" groupChineseName != null and groupChineseName != '' "> AND chinese_name = #{groupChineseName}</if>
+       <if test=" groupEnglishName != null and groupEnglishName != '' "> AND english_name = #{groupEnglishName}</if>
+       <if test=" createDate != null and createDate != '' "> AND create_date = #{createDate}</if>
+       <if test=" createUser != null and createUser != '' "> AND create_user = #{createUser}</if>
+       <if test=" lastUpdateDate != null and lastUpdateDate != '' "> AND last_update_date = #{lastUpdateDate}</if>
+       <if test=" lastUpdateUser != null and lastUpdateUser != '' "> AND last_update_user = #{lastUpdateUser}</if>
+       <if test=" activeFlag != null and activeFlag != 0 "> AND active_flag = #{activeFlag}</if>
+   </select>
+   
+   <select id="queryGroupByRowId" resultType="com.huazhu.application.cms.organization.entity.Group" parameterType="java.lang.Long">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM org_group
+       WHERE row_id = #{rowId}
+   </select>
+   
+   <!-- 条件模糊查询 -->
+   <select id="queryGroupByConditions" resultType="com.huazhu.application.cms.organization.entity.Group" parameterType="com.huazhu.application.cms.organization.entity.Group">
+       SELECT
+          <include refid="ObjectSql"/>
+       FROM org_group
+       WHERE 1=1
+       <if test=" rowId != null "> AND row_id = #{rowId}</if>
+       <if test=" groupChineseName != null "> AND chinese_name = LIKE CONCAT('%',#{groupChineseName},'%' )</if>
+       <if test=" groupEnglishName != null "> AND english_name = #{groupEnglishName}</if>
+       <if test=" createDate != null "> AND create_date = #{createDate} </if>
+       <if test=" createUser != null "> AND create_user = #{createUser} </if>
+       <if test=" lastUpdateDate != null "> AND last_update_date = #{lastUpdateDate} </if>
+       <if test=" lastUpdateUser != null "> AND last_update_user = #{lastUpdateUser} </if>
+       <if test=" activeFlag != null and activeFlag != 0 "> AND active_flag = #{activeFlag} </if>
+   </select>
+   
+   <!-- 新增 -->
+   <insert id="insertGroup" parameterType="com.huazhu.application.cms.organization.entity.Group" useGeneratedKeys="true">
+        INSERT INTO org_group
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        
+			<if test=" rowId != null " > row_id , </if>
+			<if test=" groupChineseName != null "> chinese_name , </if>
+            <if test=" groupEnglishName != null "> english_name , </if>
+			<if test=" createDate != null "> create_date , </if>
+			<if test=" createUser != null "> create_user , </if>
+			<if test=" lastUpdateDate != null "> last_update_date , </if>
+			<if test=" lastUpdateUser != null "> last_update_user , </if>
+			<if test=" activeFlag != null "> active_flag , </if>
+			
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+		
+			<if test=" rowId != null "> #{rowId} , </if>
+			<if test=" groupChineseName != null "> #{groupChineseName} , </if>
+            <if test=" groupEnglishName != null "> #{groupEnglishName} , </if>
+			<if test=" createDate != null "> #{createDate} , </if>
+			<if test=" createUser != null "> #{createUser} , </if>
+			<if test=" lastUpdateDate != null "> #{lastUpdateDate} , </if>
+			<if test=" lastUpdateUser != null "> #{lastUpdateUser} , </if>
+			<if test=" activeFlag != null "> #{activeFlag} , </if>
+			
+		</trim>
+   </insert>
+   
+   <!-- 编辑 -->
+   <update id="updateGroupByRowId" parameterType="com.huazhu.application.cms.organization.entity.Group">
+        UPDATE org_group
+		<set>
+			<if test=" groupChineseName != null "> chinese_name = #{groupChineseName} , </if>
+            <if test=" groupEnglishName != null "> english_name = #{groupEnglishName} , </if>
+			<if test=" lastUpdateDate != null "> last_update_date = #{lastUpdateDate} , </if>
+			<if test=" lastUpdateUser != null "> last_update_user = #{lastUpdateUser} , </if>
+			<if test=" activeFlag != null "> active_flag = #{activeFlag} , </if>
+		</set>
+		WHERE
+			row_id = #{rowId}
+   
+   </update>
+   
+   
+   <delete id="deleteGroupByRowId" parameterType="java.lang.Long">
+        DELETE FROM org_group WHERE row_id = #{rowId}
+   </delete>
+   
+   
+
+</mapper>
